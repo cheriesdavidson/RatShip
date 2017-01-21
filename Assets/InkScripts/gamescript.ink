@@ -1,6 +1,7 @@
 === start ===
 VAR leftslot = "empty"
 VAR rightslot = "empty"
+VAR elias = 1
 
 VAR rowland = "alive"
 VAR cheddar = "alive"
@@ -12,6 +13,7 @@ VAR cheddar = "alive"
 === scene ===
 
 = event1
+~ elias = 1
 ~ leftslot = "Cheddar"
 ~ rightslot = "Rowland"
 
