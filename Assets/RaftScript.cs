@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RaftScript : MonoBehaviour {
 
@@ -10,46 +11,61 @@ public class RaftScript : MonoBehaviour {
     public WavesScript waveScript;
     public int SuccessCount = 0;
     public int FailCount = 0;
+    public bool GotTreasure = false;
 
-    float GetTimeTilWavePeak()
+    Vector2 GetWaveNormal()
     {
-        float time_for_peak_to_pass = 1.15f * waveScript.WAVE_VELOCITY;
-        float time_since_peak = Time.time % time_for_peak_to_pass;
-        return time_for_peak_to_pass- time_since_peak;
+        // find the wave under the raft
+        RaycastHit2D ray = Physics2D.Raycast(transform.position, new Vector2(0, -1),100,1<<4);
+        return ray.normal;
+    }
+
+    bool IsDescendingWavePeak()
+    {
+        return GetWaveNormal().x > 0.0f;
     }
 
 	// Use this for initialization
 	void Start () {
         SuccessCount = 0;
         FailCount = 0;
+        GotTreasure = false;
     }
 
-    float LastPaddleTime = -1.0f;
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        print(col.gameObject.name);
+        if (col.gameObject.name == "TreasureObject") {
+            print("success");
+            GotTreasure = true;
+            SceneManager.LoadScene("blank");
+        }
+    }
+
     float LastPaddleSuccess = -1.0f;
     float LastPaddleFail = -1.0f;
 
 	// Update is called once per frame
 	void Update () {
+    
         // do we need to display paddle success/failure?
         if (Time.time - LastPaddleSuccess < 0.5f) {
             PaddleSuccess.SetActive(true);
             PaddleFail.SetActive(false);
             PaddlePrompt.SetActive(false);
-            return;
         } else if (Time.time - LastPaddleFail < 0.5f) {
             PaddleSuccess.SetActive(false);
             PaddleFail.SetActive(true);
             PaddlePrompt.SetActive(false);
-            return;
+        } else {
+            PaddleSuccess.SetActive(false);
+            PaddleFail.SetActive(false);
         }
 
-        PaddleSuccess.SetActive(false);
-        PaddleFail.SetActive(false);
-
-        float time_til_wave_peak = GetTimeTilWavePeak();
-
+        bool descending = IsDescendingWavePeak();
 		// display paddle button prompt
-        if (GetTimeTilWavePeak() < 0.5f) {
+        if (descending) {
             PaddlePrompt.SetActive(true);
         } else {
             PaddlePrompt.SetActive(false);
@@ -57,17 +73,20 @@ public class RaftScript : MonoBehaviour {
 
         // did we paddle?
         if(Input.anyKeyDown) {
-            LastPaddleTime = Time.time;
-
             // successfully?
-            if(time_til_wave_peak < 0.5f) {
+            if(descending) {
                 LastPaddleSuccess = Time.time;
                 SuccessCount++;
+                waveScript.WAVE_VELOCITY += 0.5f;
             } else {
                 LastPaddleFail = Time.time;
                 FailCount++;
+                waveScript.WAVE_VELOCITY -= 0.5f;
+                if(waveScript.WAVE_VELOCITY<=0.0f) { 
+                    print("failure");
+                    SceneManager.LoadScene("blank");
+                }
             }
         }
-
     }
 }

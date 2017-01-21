@@ -14,7 +14,7 @@ public class WavesScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-      
+
         // move waves leftwards
         transform.position = new Vector3(transform.position.x - Time.deltaTime * WAVE_VELOCITY, transform.position.y, transform.position.z);
     }
