@@ -35,7 +35,6 @@ public class RaftScript : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        print(col.gameObject.name);
         if (col.gameObject.name == "TreasureObject") {
             print("success");
             GotTreasure = true;
