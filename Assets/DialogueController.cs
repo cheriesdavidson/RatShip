@@ -10,7 +10,7 @@ struct Character
     [SerializeField]
     public string name;
     [SerializeField]
-    public Image sprite;
+    public Sprite sprite;
 
 }
 
@@ -25,9 +25,7 @@ public class DialogueController : MonoBehaviour {
     [SerializeField]
     GameObject choiceButtonPrefab;
     [SerializeField]
-    Image speakerLeft;
-    [SerializeField]
-    Image speakerRight;
+    Text speakerLabel;
     [SerializeField]
     Image characterRight;
     [SerializeField]
@@ -37,9 +35,13 @@ public class DialogueController : MonoBehaviour {
 
     //private
     private Story story;
-    private float textSpeed = 1.0f;
+    private float textSpeed = 0.03f;
     private float nextLetterTime = 0;
-    private bool isPrinting = false;
+    private int currentLetter = 0;
+    private string currentDialogue;
+    private bool waitingForChoice = false;
+    private bool printing = false;
+    private bool playerReadyToContinue = true;
 
     void Start()
     {
@@ -52,90 +54,169 @@ public class DialogueController : MonoBehaviour {
         }
         
 
-            //KICK OFF STORY!
-            //TODO: This should probably driven by 
+        //KICK OFF STORY!
         StartStory();
     }
 
     void StartStory()
     {
         story = new Story(inkJSONAsset.text);
-        RefreshView();
     }
 
     void Update()
     {
         //check if we're writting stuff
-        //{writing function}
+        //{writing functions}
+        //return;
 
-        //
-    }
-
-
-    void RefreshView()
-    {
-        //Cleanup
-        RemoveChildren(choiceContainer);
-        textBox.text = "";
-
-        while (story.canContinue)
+        if (printing)
         {
-            string text = story.Continue().Trim();
-            //make this print out slowly
-
-            //any slot updates
-
-            //TODO: Check this line actually works and update the string that greg is using!
-            Image image;
-
-            object speaker = story.variablesState["slotLeft"];
-            if (speaker != null) {
-                image = GetCharacterImage(speaker.ToString());
-                if (image != null)
-                    characterLeft = image;
-            }
-            speaker = story.variablesState["slotRight"];
-            if (speaker != null)
+            if (Time.time > nextLetterTime)
             {
-                image = GetCharacterImage(speaker.ToString());
-                if (name !=null )
-                    characterLeft = image;
+                //print the next letter
+                if (currentLetter < currentDialogue.Length)
+                {
+                    //if we still have things to print...
+                    //update lates
+
+                    nextLetterTime = Time.time + textSpeed;
+                    textBox.text += currentDialogue[currentLetter];
+                    currentLetter++;
+
+                }
+                else
+                {
+                    //we''re out of bounds and done
+                    printing = false;
+                }
             }
-
-            //then we want to check for character!
-            string[] splits = text.Split(':');
-            
-
-            //who is talking - update their
-            //what slot are they in?
-
-            //do something to wait
-            textBox.text = text;
+            return;
         }
 
+        //if there's more story do something stuff...
+        if (waitingForChoice)
+        {
+            return;
+        }
+
+        if (story.canContinue && !printing)
+        {
+            Debug.Log("Trying to continue story");
+            ProcessStoryLine();
+
+            return;
+        }
+
+        //if there's a choice
         if (story.currentChoices.Count > 0)
         {
-            //active the choices screen!
-            choiceContainer.SetActive(true);
-            for (int i = 0; i < story.currentChoices.Count; i++)
+            Debug.Log("New choice");
+            waitingForChoice = true;
+            ShowChoiceDialogue();
+            playerReadyToContinue = true;
+            return;
+        }
+        //something something figure out if player is in game over state?
+    }
+    public void PlayerTap()
+    {
+        if (printing)
+        {
+            //display all text!
+
+        }
+        else if (!playerReadyToContinue){
+            playerReadyToContinue = true;
+        }
+
+    }
+
+    void ProcessStoryLine()
+    {
+        //gets the next set of text?
+        string text = story.Continue().Trim();
+        if (text.Length == 0)
+        {
+            Debug.Log("Blank line!");
+            return;
+        }
+
+        playerReadyToContinue = false;
+        Debug.Log("Current dialgoue: " + text);
+        //make this print out slowly
+        //any slot updates
+
+        //TODO: Check this line actually works and update the string that greg is using!
+        Sprite sprite;
+
+        object imageSlot = story.variablesState["leftslot"];
+        if (imageSlot != null)
+        {
+            if (imageSlot.ToString().ToLower() == "empty")
             {
-                Choice choice = story.currentChoices[i];
-                Transform choiceGo = Instantiate(choiceButtonPrefab).GetComponent<Transform>();
-                choiceGo.SetParent(choiceContainer.transform);
-                Button choiceButton = choiceGo.GetComponent<Button>();
-                choiceButton.onClick.AddListener(delegate {
-                    OnClickChoiceButton(choice);
-                });
+                characterLeft.gameObject.SetActive(false);
+            }
+            else {
+                characterLeft.gameObject.SetActive(true);
+                sprite = GetCharacterSprite(imageSlot.ToString());
+                if (sprite != null)
+                    characterLeft.sprite = sprite;
             }
         }
-        else {
-            //Story is over?
-            //Button choice = CreateChoiceView("End of story.\nRestart?");
-            /*choice.onClick.AddListener(delegate {
-                StartStory();
-            });*/
+        imageSlot = story.variablesState["rightslot"];
+        if (imageSlot != null)
+        {
+            if (imageSlot.ToString().ToLower() == "empty")
+            {
+                characterRight.gameObject.SetActive(true);
+            }
+            else {
+                sprite = GetCharacterSprite(imageSlot.ToString());
+                if (name != null)
+                    characterRight.sprite = sprite;
+            }
         }
+
+        //then we want to check for character!
+        string[] splits = text.Split(':');
+        if (splits.Length > 1) //assume this is a character thing
+        {
+            speakerLabel.text = splits[0].ToString();
+            currentDialogue = splits[1];
+
+        }
+        else
+        {
+            speakerLabel.text = "";
+            currentDialogue = splits[0];
+        }
+
+        textBox.text = "";
+        currentLetter = 0;
+        nextLetterTime = Time.time + textSpeed;
+        printing = true;
+        
     }
+
+    void ShowChoiceDialogue()
+    {
+        //active the choices screen!
+        choiceContainer.SetActive(true);
+        for (int i = 0; i < story.currentChoices.Count; i++)
+        {
+            Choice choice = story.currentChoices[i];
+            Transform choiceGo = Instantiate(choiceButtonPrefab).GetComponent<Transform>();
+            choiceGo.SetParent(choiceContainer.transform);
+            Button choiceButton = choiceGo.GetComponent<Button>();
+            choiceButton.onClick.AddListener(delegate {
+                OnClickChoiceButton(choice);
+            });
+        }
+        waitingForChoice = true;
+
+        return;
+    }
+
 
     void OnClickChoiceButton(Choice choice)
     {
@@ -144,7 +225,8 @@ public class DialogueController : MonoBehaviour {
         //hide button container & delete buttons
         choiceContainer.SetActive(false);
         RemoveChildren(choiceContainer);
-        RefreshView();
+        textBox.text = "";
+        waitingForChoice = false;
     }
 
     void RemoveChildren(GameObject parentGo)
@@ -157,7 +239,7 @@ public class DialogueController : MonoBehaviour {
         }
     }
 
-    Image GetCharacterImage(string name)
+    Sprite GetCharacterSprite(string name)
     {
         name = name.ToLower();
         for (int i = 0; i < characters.Length; i++)
