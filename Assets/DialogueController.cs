@@ -31,11 +31,15 @@ public class DialogueController : MonoBehaviour {
     [SerializeField]
     Image characterLeft;
     [SerializeField]
+    GameObject playerTapButton;
+    [SerializeField]
     Character[] characters;
+
 
     //private
     private Story story;
-    private float textSpeed = 0.03f;
+    private float defaultTextSpeed = 0.03f;
+    private float currentTextSpeed;
     private float nextLetterTime = 0;
     private int currentLetter = 0;
     private string currentDialogue;
@@ -52,7 +56,11 @@ public class DialogueController : MonoBehaviour {
         {
             characters[i].name = characters[i].name.ToLower();
         }
-        
+
+        currentDialogue = "";
+        currentLetter = 0;
+        currentTextSpeed = defaultTextSpeed;
+        textBox.text = "";
 
         //KICK OFF STORY!
         StartStory();
@@ -69,6 +77,9 @@ public class DialogueController : MonoBehaviour {
         //{writing functions}
         //return;
 
+        if (story.variablesState["textspeed"] != null)
+            currentTextSpeed = defaultTextSpeed * (int)story.variablesState["textspeed"];
+
         if (printing)
         {
             if (Time.time > nextLetterTime)
@@ -79,14 +90,14 @@ public class DialogueController : MonoBehaviour {
                     //if we still have things to print...
                     //update lates
 
-                    nextLetterTime = Time.time + textSpeed;
+                    nextLetterTime = Time.time + currentTextSpeed;
                     textBox.text += currentDialogue[currentLetter];
                     currentLetter++;
 
                 }
                 else
                 {
-                    //we''re out of bounds and done
+                    //we're out of bounds and done
                     printing = false;
                 }
             }
@@ -99,17 +110,19 @@ public class DialogueController : MonoBehaviour {
             return;
         }
 
-        if (story.canContinue && !printing)
+        if (story.canContinue && !printing && playerReadyToContinue)
         {
             Debug.Log("Trying to continue story");
             ProcessStoryLine();
-
             return;
         }
 
         //if there's a choice
-        if (story.currentChoices.Count > 0)
+        if (story.currentChoices.Count > 0 && playerReadyToContinue)
         {
+            //hide the player ready thing
+            playerTapButton.SetActive(false);
+
             Debug.Log("New choice");
             waitingForChoice = true;
             ShowChoiceDialogue();
@@ -123,6 +136,8 @@ public class DialogueController : MonoBehaviour {
         if (printing)
         {
             //display all text!
+            textBox.text = currentDialogue;
+            printing = false;
 
         }
         else if (!playerReadyToContinue){
@@ -137,12 +152,12 @@ public class DialogueController : MonoBehaviour {
         string text = story.Continue().Trim();
         if (text.Length == 0)
         {
-            Debug.Log("Blank line!");
             return;
         }
 
         playerReadyToContinue = false;
-        Debug.Log("Current dialgoue: " + text);
+        playerTapButton.SetActive(true);
+
         //make this print out slowly
         //any slot updates
 
@@ -181,21 +196,26 @@ public class DialogueController : MonoBehaviour {
         string[] splits = text.Split(':');
         if (splits.Length > 1) //assume this is a character thing
         {
-            speakerLabel.text = splits[0].ToString();
+            //manually make caps nice
+            char[] speakerName = splits[0].ToString().ToLower().ToCharArray();
+            speakerName[0] = speakerName[0].ToString().ToUpper()[0];
+            speakerLabel.text = new string(speakerName);
             currentDialogue = splits[1];
+            textBox.fontStyle = FontStyle.Normal;
 
         }
         else
         {
-            speakerLabel.text = "";
+            //narrative - all appears at once
             currentDialogue = splits[0];
+            textBox.fontStyle = FontStyle.Italic;
         }
 
         textBox.text = "";
         currentLetter = 0;
-        nextLetterTime = Time.time + textSpeed;
+        nextLetterTime = Time.time + currentTextSpeed;
         printing = true;
-        
+
     }
 
     void ShowChoiceDialogue()
@@ -208,6 +228,7 @@ public class DialogueController : MonoBehaviour {
             Transform choiceGo = Instantiate(choiceButtonPrefab).GetComponent<Transform>();
             choiceGo.SetParent(choiceContainer.transform);
             Button choiceButton = choiceGo.GetComponent<Button>();
+            choiceGo.GetComponentInChildren<Text>().text = choice.text;
             choiceButton.onClick.AddListener(delegate {
                 OnClickChoiceButton(choice);
             });
