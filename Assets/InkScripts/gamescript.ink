@@ -8,9 +8,9 @@ VAR cheddar = "alive"
 
 
 
--> scene
+-> chapter1
 
-=== scene ===
+=== chapter1 ===
 
 = event1
 ~ elias = 1
@@ -73,4 +73,17 @@ CHEDDAR: It'll... it'll be OK. You'll do your best, like you always do. Now come
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 <i>You need to get away from the wreckage. Press X repeatedly to build momentum, and release to ride the wave away. Failure can have unexpected consequences.</i>
+-> chapter2
+
+=== chapter2 ===
+
+= event1
+~ elias = 1
+~ leftslot = "Cheddar"
+~ rightslot = "Rowland"
+
 -> END
+
+
+
+
