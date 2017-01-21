@@ -35,7 +35,6 @@ public class RaftScript : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        print(col.gameObject.name);
         if (col.gameObject.name == "TreasureObject") {
             print("success");
             GotTreasure = true;
@@ -48,7 +47,12 @@ public class RaftScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-    
+        // line ourselves up with wave normal
+        Vector2 wave_normal = GetWaveNormal();
+        Quaternion desired =  Quaternion.FromToRotation(Vector3.up, wave_normal);
+        float damping = 0.5f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, desired, damping * Time.deltaTime);
+
         // do we need to display paddle success/failure?
         if (Time.time - LastPaddleSuccess < 0.5f) {
             PaddleSuccess.SetActive(true);
