@@ -14,10 +14,10 @@ VAR cheddar = "alive"
 VAR arat = "alive"
 VAR mordecai = "alive"
 
-VAR you_onboat = "no"
-VAR rowland_onboat = "no"
-VAR cheddar_onboat = "no"
-VAR emmental_onboat = "no"
+VAR you_onboat = "yes"
+VAR rowland_onboat = "yes"
+VAR cheddar_onboat = "yes"
+VAR emmental_onboat = "yes"
 VAR arat_onboat = "no"
 VAR mordecai_onboat = "no"
 
@@ -38,10 +38,6 @@ TITLE: Survive, at all costs.
 -> event1
 
 = event1
-~ rowland_onboat = "yes"
-~ cheddar_onboat = "yes"
-~ emmental_onboat = "yes"
-~ you_onboat = "yes"
 ~ leftslot = "Cheddar"
 ~ rightslot = "Rowland"
 
@@ -249,6 +245,7 @@ ARAT: Meooow!!! Meoww!!!
 
 = mordecai_success
 ~ paddlingsection = "false"
+~ mordecai_onboat = "yes"
 ~ audiolevel = 9
 You reach Mordecai in good time, and he swims towards your boat.
 
@@ -269,6 +266,7 @@ They fall beneath the waves. They are gone.
 
 = mordecai_fail
 ~ audiolevel = 9
+~ mordecai_onboat = "yes"
 ~ paddlingsection = "false"
 You just reach Mordecai in time, managing to grab him before he falls beneath the waves. 
 
@@ -310,6 +308,7 @@ He falls beneath the waves. He is gone.
 -> postrescue
 
 = arat_fail
+~ arat_onboat = "yes"
 ~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Arat in time, managing to grab them before they fall beneath the waves. 
@@ -332,6 +331,8 @@ He falls beneath the waves. He is gone.
 -> postrescue
 
 = aratmordecai_success
+~ mordecai_onboat = "yes"
+~ arat_onboat = "yes"
 ~ audiolevel = 9
 ~ paddlingsection = "false"
 You reach Arat in good time, and they swim happily towards your boat.
@@ -357,6 +358,8 @@ ARAT: Yes. I am Arat.
 -> postrescue
 
 = aratmordecai_fail
+~ mordecai_onboat = "yes"
+~ arat_onboat = "yes"
 ~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Arat in time, managing to grab them before they fall beneath the waves. 
@@ -698,7 +701,7 @@ Mordecai loses his footing.
 He falls from the boat, down into the waves. 
 *[DO NOTHING]
 You do nothing, and as Mordecai approaches Arat, the kitten stumbles back in fear.
-Arat loses thier footing.
+Arat loses their footing.
 ~ arat_onboat = "no"
 ~ leftslot = "empty"
 ~ rightslot = "empty"
@@ -1222,7 +1225,7 @@ TITLE: The End
 
 = credits
 TITLE: Written by Greg Buchanan
-TITLE: Programming by Amy Philips and Cherie Davidson
+TITLE: Programming by Amy Phillips and Cherie Davidson
 TITLE: Art by Aiden Kohler
 TITLE: Music by Holley Gray
 TITLE: Made at Guildford #GGJ17

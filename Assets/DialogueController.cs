@@ -72,6 +72,8 @@ public class DialogueController : MonoBehaviour {
         currentTextSpeed = defaultTextSpeed;
         textBox.text = "";
 
+        boat.UpdateSprites();
+
         //AudioController.inst.SetLevel(0);
 
     }
