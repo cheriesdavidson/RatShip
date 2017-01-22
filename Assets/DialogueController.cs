@@ -148,6 +148,7 @@ public class DialogueController : MonoBehaviour {
         }
 
         //if there's a choice
+        //Debug.Log("Choices count:" + GameManager.inst.story.currentChoices.Count+ ", playerReadyToContinue: "+ playerReadyToContinue);
 
         if (GameManager.inst.story.currentChoices.Count > 0 && playerReadyToContinue)
         {
