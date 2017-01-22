@@ -88,7 +88,7 @@ public class RaftScript : MonoBehaviour {
                 waveScript.WAVE_VELOCITY -= 0.5f;
                 if(waveScript.WAVE_VELOCITY<=0.0f) { 
                     print("failure");
-                    SceneManager.LoadScene("blank");
+                    SceneManager.LoadScene("Dialogue");
                 }
             }
         }
