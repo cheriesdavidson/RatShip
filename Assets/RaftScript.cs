@@ -36,7 +36,7 @@ public class RaftScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // more difficult, less time
-        SlowdownPerSecond = MinSlowdown + (MaxSlowdown - MinSlowdown) * GameManager.difficulty;
+        SlowdownPerSecond = MinSlowdown + (MaxSlowdown - MinSlowdown) * GameManager.inst.difficulty;
         UpdateVelocityText();
     }
 
@@ -44,7 +44,7 @@ public class RaftScript : MonoBehaviour {
     {
         if (col.gameObject.name == "TreasureObject") {
             print("success");
-            //GameManager.CompleteWaves(true);
+            GameManager.inst.CompleteWaveSection(true);
         }
     }
 
@@ -99,7 +99,7 @@ public class RaftScript : MonoBehaviour {
                 waveScript.WAVE_VELOCITY -= 0.5f;
                 if(waveScript.WAVE_VELOCITY<=0.0f) { 
                     print("failure");
-                    //GameManager.CompleteWaves(false);
+                    GameManager.inst.CompleteWaveSection(false);
                 }
             }
         }
