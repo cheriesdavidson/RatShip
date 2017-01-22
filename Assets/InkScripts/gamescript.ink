@@ -26,6 +26,8 @@ VAR location = "wreck"
 
 === chapter1 ===
 
+~ audiolevel = 1
+
 TITLE: You were drowning, and they pulled you from beneath the surface. 
 TITLE: Survive, at all costs.
 -> event1
@@ -56,6 +58,7 @@ Cheddar cries out, but says nothing. He's gone.
 ~ leftslot = "Emmental"
 ~ rightslot = "Cheddar"
 EMMENTAL: Mum, we have to go back! Mum! Rowland, he's --
+~ audiolevel = 2
 Cheddar is just quiet. 
 -
 ~ leftslot = "You"

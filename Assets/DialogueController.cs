@@ -12,7 +12,9 @@ struct Character
     [SerializeField]
     public Sprite sprite;
     [SerializeField]
-    public AudioClip voice;
+    public AudioClip[] voice;
+    [SerializeField]
+    public bool onShip;
 
 }
 
@@ -33,6 +35,12 @@ public class DialogueController : MonoBehaviour {
     [SerializeField]
     GameObject playerTapButton;
     [SerializeField]
+    Text titleCardText;
+    [SerializeField]
+    Animator titleCardAnimator;
+    [SerializeField]
+    VoiceManager voiceManager;
+    [SerializeField]
     Character[] characters;
 
 
@@ -45,6 +53,7 @@ public class DialogueController : MonoBehaviour {
     private bool waitingForChoice = false;
     private bool printing = false;
     private bool playerReadyToContinue = true;
+    private bool isTitleCardActive = false;
 
     void Start()
     {
@@ -89,7 +98,10 @@ public class DialogueController : MonoBehaviour {
                     //update lates
 
                     nextLetterTime = Time.time + currentTextSpeed;
-                    textBox.text += currentDialogue[currentLetter];
+                    if (isTitleCardActive)
+                        titleCardText.text += currentDialogue[currentLetter];
+                    else
+                        textBox.text += currentDialogue[currentLetter];
                     currentLetter++;
 
                 }
@@ -110,6 +122,21 @@ public class DialogueController : MonoBehaviour {
 
         if (GameManager.inst.story.canContinue && !printing && playerReadyToContinue)
         {
+            //ELIAS
+            if (GameManager.inst.story.variablesState["audiolevel"] != null)
+            {
+                AudioController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiolevel"]);
+                Debug.Log("Changing audio to " + (int)GameManager.inst.story.variablesState["audiolevel"] + " level");
+            }
+
+            //if not printing and titlecard is active, we get rid of the title card
+            if (isTitleCardActive)
+            {
+                titleCardAnimator.gameObject.SetActive(false);
+                titleCardText.text = "";
+                isTitleCardActive = false;
+            }
+
             ProcessStoryLine();
             return;
         }
@@ -117,6 +144,30 @@ public class DialogueController : MonoBehaviour {
         //if there's a choice
         if (GameManager.inst.story.currentChoices.Count > 0 && playerReadyToContinue)
         {
+
+            //update character states
+            for (int i = 0; i < characters.Length; i++)
+            {
+                if (GameManager.inst.story.variablesState[characters[i].name + "_onship"] != null)
+                {
+                    if (GameManager.inst.story.variablesState[characters[i].name + "_onship"].ToString().ToLower() == "true")
+                    {
+                        if (!characters[i].onShip)
+                        {
+                            characters[i].onShip = true;
+                            //TODO: add their sprite
+                        }
+                    }
+                    else
+                    {
+                        if (characters[i].onShip)
+                        {
+                            characters[i].onShip = false;
+                            //TODO: remove their sprite
+                        }
+                    }
+                }
+            }
 
             if (GameManager.inst.story.variablesState["paddlingsection"] != null)
             {
@@ -131,7 +182,7 @@ public class DialogueController : MonoBehaviour {
                     {
                         characterLeft.gameObject.SetActive(false);
                         characterRight.gameObject.SetActive(false);
-                        speakerLabel.gameObject.SetActive(false);
+                        speakerLabel.transform.parent.gameObject.SetActive(false);
 
                         if (GameManager.inst.paddlingSuccess)
                             GameManager.inst.story.ChooseChoiceIndex(0);
@@ -159,12 +210,17 @@ public class DialogueController : MonoBehaviour {
         }
         //something something figure out if player is in game over state?
     }
+
     public void PlayerTap()
     {
         if (printing)
         {
             //display all text!
-            textBox.text = currentDialogue;
+            if (isTitleCardActive)
+                titleCardText.text = currentDialogue;
+            else
+                textBox.text = currentDialogue;
+
             printing = false;
 
         }
@@ -182,6 +238,9 @@ public class DialogueController : MonoBehaviour {
         {
             return;
         }
+
+        //stop audio!
+        voiceManager.Stop();
 
         playerReadyToContinue = false;
         playerTapButton.SetActive(true);
@@ -201,7 +260,7 @@ public class DialogueController : MonoBehaviour {
             }
             else {
                 characterLeft.gameObject.SetActive(true);
-                sprite = GetCharacterSprite(imageSlot.ToString());
+                sprite = GetCharacter(imageSlot.ToString()).sprite;
                 if (sprite != null)
                     characterLeft.sprite = sprite;
             }
@@ -214,7 +273,7 @@ public class DialogueController : MonoBehaviour {
                 characterRight.gameObject.SetActive(true);
             }
             else {
-                sprite = GetCharacterSprite(imageSlot.ToString());
+                sprite = GetCharacter(imageSlot.ToString()).sprite;
                 if (name != null)
                     characterRight.sprite = sprite;
             }
@@ -222,25 +281,44 @@ public class DialogueController : MonoBehaviour {
 
         //then we want to check for character!
         string[] splits = text.Split(':');
+
+
         if (splits.Length > 1) //assume this is a character thing
         {
-            //manually make caps nice
-            char[] speakerName = splits[0].ToString().ToLower().ToCharArray();
-            speakerName[0] = speakerName[0].ToString().ToUpper()[0];
-            speakerLabel.text = new string(speakerName);
+            //if title screen
+            if (splits[0].ToLower() == "title")
+            {
+                //run the title card
+                titleCardAnimator.gameObject.SetActive(true);
+                isTitleCardActive = true;
+
+            }
+            else { //assume it's a char
+
+                //do speaker card stuff:
+                char[] speakerName = splits[0].ToString().ToLower().ToCharArray();
+                speakerName[0] = speakerName[0].ToString().ToUpper()[0];
+                speakerLabel.text = new string(speakerName);
+                textBox.fontStyle = FontStyle.Normal;
+
+                //make the speaker label active
+                speakerLabel.transform.parent.gameObject.SetActive(true);
+
+                //play voice!
+                voiceManager.Play(GetCharacter(speakerLabel.text).voice);
+            }
             currentDialogue = splits[1].Trim();
-            textBox.fontStyle = FontStyle.Normal;
-            speakerLabel.gameObject.SetActive(true);
         }
         else
         {
             //narrative - all appears at once
-            speakerLabel.gameObject.SetActive(false);
+            speakerLabel.transform.parent.gameObject.SetActive(false);
             currentDialogue = splits[0].Trim();
             textBox.fontStyle = FontStyle.Italic;
         }
 
         textBox.text = "";
+        titleCardText.text = "";
         currentLetter = 0;
         nextLetterTime = Time.time + currentTextSpeed;
         printing = true;
@@ -289,16 +367,16 @@ public class DialogueController : MonoBehaviour {
         }
     }
 
-    Sprite GetCharacterSprite(string name)
+    Character GetCharacter(string name)
     {
         name = name.ToLower();
         for (int i = 0; i < characters.Length; i++)
         {
             if (characters[i].name == name)
-                return characters[i].sprite;
+                return characters[i];
         }
         Debug.LogError("Cannot find sprite for character " + name);
-        return null;
+        return new Character();
     }
 
 

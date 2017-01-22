@@ -29,18 +29,18 @@ public class AudioController : MonoBehaviour {
         if (GameManager.inst.story != null)
         {
 
-            //ELIAS
-            if (GameManager.inst.story.variablesState["audiolevel"] != null)
-            {
-
-                AudioController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiolevel"]);
-            }
-
+            /*
             if (GameManager.inst.story.variablesState["audiotheme"] != null)
             {
                 AudioController.inst.SetTheme((string)GameManager.inst.story.variablesState["audiotheme"]);
-            }
+            }*/
         }
+    }
+
+    public void JumpToBar(int level)
+    {
+        setLevel.level = level;
+        eliasPlayer.QueueEvent(setLevel.CreateSetLevelEvent(eliasPlayer.Elias));
     }
 
     public void SetLevel(int level)
