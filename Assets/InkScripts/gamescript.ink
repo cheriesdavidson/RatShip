@@ -5,6 +5,7 @@ VAR audiotheme = "dialogue"
 VAR textspeed = 1
 
 VAR paddlingsection = "false"
+VAR rescuetarget = ""
 VAR difficulty = 0
 VAR distance = 0
 
@@ -18,9 +19,16 @@ VAR cheddar_onboat = "yes"
 VAR arat_onboat = "no"
 VAR mordecai_onboat = "no"
 
+
+VAR location = "wreck"
+
 -> chapter1
 
 === chapter1 ===
+
+TITLE: You were drowning, and they pulled you from beneath the surface. 
+TITLE: Survive, at all costs.
+-> event1
 
 = event1
 ~ leftslot = "Cheddar"
@@ -152,6 +160,7 @@ ARAT: Meow! I can't swim, help me!!! Meow!!
 You can save the figure before they drown. Go!
 ~ difficulty = 0.6
 ~ distance = 0
+~ rescuetarget = "arat"
 ~ paddlingsection = "true"
 *[SUCCEED] -> chapter3.aratmordecai_success
 *[FAIL] -> chapter3.aratmordecai_fail
@@ -199,6 +208,7 @@ If you take too long, both will die. Choose.
 MORDECAI: Hurry, please! My shoes are being damaged, good sirs!
 ~ difficulty = 0.6
 ~ distance = 0
+~ rescuetarget = "mordecai"
 ~ paddlingsection = "true"
 **[SUCCEED] -> chapter3.mordecai_success
 **[FAIL] -> chapter3.mordecai_fail
@@ -210,6 +220,7 @@ MORDECAI: Hurry, please! My shoes are being damaged, good sirs!
 ARAT: Meooow!!! Meoww!!!
 ~ difficulty = 0.6
 ~ distance = 0
+~ rescuetarget = "arat"
 ~ paddlingsection = "true" 
 -
 **[SUCCEED] -> chapter3.arat_success
@@ -452,9 +463,51 @@ ARAT: I do not nibbles rats. Rats are not food.
 -
 ~ leftslot = "empty"
 ~ rightslot = "empty"
-Cheddar is about to say something when a fog horn blasts out across the area. 
+Cheddar is about to say something when another noise bursts from the wreckage.
+Something on board just exploded.
+~ leftslot = "You"
+~ rightslot = "empty"
+YOU: We need to go. 
+~ rightslot = "Cheddar"
+CHEDDAR: Shouldn't we stay and wait for help?
+*[TRUTH]
+YOU: Help won't come.
+*[LIE]
+YOU: It feels dangerous here. We should get clear of the wreck.
+-
+Succeed at the next section to leave the wreck.
+Fail the next section to stay here.
 
-*end for Now
+-> chapter4
+
+=== chapter4 ===
+= initialsetup
+~ difficulty = 0.2
+~ distance = 1
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED] -> left
+*[FAIL] -> remained
+
+
+= left
+TITLE: TWO DAYS LATER...
+TITLE: It has been two days since you left the wreck.
+TITLE: You have no food or water left. 
+TITLE: There is no land in sight. 
+TITLE: You will all die soon without sustenance. 
+~ location = "left"
+-> 2dayslater
+
+= remained
+TITLE: TWO DAYS LATER...
+TITLE: It has been two days since the sinking.
+TITLE: You have managed to scavenge some supplies.
+TITLE: Help has not come.
+TITLE: Time is running out and tensions are high. 
+~ location = "wreck"
+-> 2dayslater
+
+= 2dayslater
+* end of script
 -> END
-
-
