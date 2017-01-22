@@ -47,7 +47,7 @@ public class RaftScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // more difficult, more slowdown
-        SlowdownPerSecond = MinSlowdown + (MaxSlowdown - MinSlowdown) * GameManager.inst.difficulty;
+        SlowdownPerSecond = MinSlowdown + (MaxSlowdown - MinSlowdown) * (GameManager.inst == null ? 0.5f : GameManager.inst.difficulty);
         UpdateVelocityText();
     }
 
@@ -66,7 +66,7 @@ public class RaftScript : MonoBehaviour {
 	void Update () {
 
         // slowdown each frame (except the first few frames)
-        if(Time.timeSinceLevelLoad > 0.5f)
+        if(Time.timeSinceLevelLoad > 1.5f)
             waveScript.WAVE_VELOCITY -= SlowdownPerSecond * Time.deltaTime;
 
         UpdateVelocityText();
