@@ -10,7 +10,6 @@ public class RaftScript : MonoBehaviour {
     public GameObject PaddleSuccess;
     public GameObject PaddleFail;
     public WavesScript waveScript;
-    public Text Speed;
     public AudioClip[] OarSounds;
 
     static float MaxSlowdown = 1.47f;
@@ -29,11 +28,6 @@ public class RaftScript : MonoBehaviour {
         return GetWaveNormal().x > 0.0f;
     }
 
-    void UpdateVelocityText()
-    {
-        Speed.text = "Speed: " + waveScript.WAVE_VELOCITY;
-    }
-
     void PlayOarSound()
     {
         AudioSource audio = GetComponent<AudioSource>();
@@ -48,7 +42,6 @@ public class RaftScript : MonoBehaviour {
 	void Start () {
         // more difficult, more slowdown
         SlowdownPerSecond = MinSlowdown + (MaxSlowdown - MinSlowdown) * (GameManager.inst == null ? 0.5f : GameManager.inst.difficulty);
-        UpdateVelocityText();
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -68,8 +61,6 @@ public class RaftScript : MonoBehaviour {
         // slowdown each frame (except the first few frames)
         if(Time.timeSinceLevelLoad > 1.5f)
             waveScript.WAVE_VELOCITY -= SlowdownPerSecond * Time.deltaTime;
-
-        UpdateVelocityText();
 
         // line ourselves up with wave normal
         Vector2 wave_normal = GetWaveNormal();
