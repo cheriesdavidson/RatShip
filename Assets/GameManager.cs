@@ -33,8 +33,10 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(this);
         }
+
         inst = this;
         DontDestroyOnLoad(gameObject);
+        gameObject.SetActive(true);
     }
 
     // Use this for initialization
