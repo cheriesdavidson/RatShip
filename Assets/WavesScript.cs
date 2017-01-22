@@ -16,6 +16,8 @@ public class WavesScript : MonoBehaviour {
     void SetRescueTargetVisible(string target)
     {
         bool found = false;
+        GameObject treasure = GameObject.Find("TreasureObject");
+
         int children = ParentFinishPoint.transform.childCount;
         print("children:" + children);
         for (int i = 0; i < children; ++i) {
@@ -34,8 +36,8 @@ public class WavesScript : MonoBehaviour {
         }
 
         if(!found) {
-            GameObject treasure = GameObject.Find("TreasureObject");
             treasure.SetActive(true);
+            ChosenFinishPoint = treasure;
         }
     }
 
@@ -72,13 +74,13 @@ public class WavesScript : MonoBehaviour {
         float dist = GetDistanceRaftToFinalSq() / StartDistanceToTarget;
         if (AudioController.inst) {
             if (dist < .25f) {
-                AudioController.inst.SetLevel(3);
+                AudioController.inst.SetLevel(16);
             } else if (dist < .5f) {
-                AudioController.inst.SetLevel(2);
+                AudioController.inst.SetLevel(15);
             } else if(dist < .75f) {
-                AudioController.inst.SetLevel(1);
+                AudioController.inst.SetLevel(14);
             } else {
-                AudioController.inst.SetLevel(0);
+                AudioController.inst.SetLevel(13);
             }
         }  
     }
