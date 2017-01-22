@@ -224,6 +224,7 @@ The shouts continue, however. In the distance, you see the other figure cry out.
 ~ rightslot = "empty"
 ARAT: Meoww!!! Help me!
 They fall beneath the waves. They are gone.
+-> postrescue
 
 
 
@@ -241,6 +242,7 @@ The shouts continue, however. In the distance, you see the other figure cry out.
 ~ rightslot = "empty"
 ARAT: Meoww!!! Help me!
 They fall beneath the waves. They are gone.
+-> postrescue
 
 
 = arat_success
@@ -261,6 +263,7 @@ The shouts continue, however. In the distance, you see the other figure cry out.
 ~ rightslot = "empty"
 MORDECAI: I -- I -- oh, oh dash it all!
 He falls beneath the waves. He is gone.
+-> postrescue
 
 = arat_fail
 ~ paddlingsection = "false"
@@ -280,7 +283,7 @@ The shouts continue, however. In the distance, you see the other figure cry out.
 ~ rightslot = "empty"
 MORDECAI: I -- I -- oh, oh dash it all!
 He falls beneath the waves. He is gone.
-
+-> postrescue
 
 = aratmordecai_success
 ~ paddlingsection = "false"
@@ -303,6 +306,7 @@ Mordecai winces and moves back from the stranger.
 ~ leftslot = "Mordecai"
 MORDECAI: Get away from me, you filthy rat!
 ARAT: Yes. I am Arat.
+-> postrescue
 
 = aratmordecai_fail
 ~ paddlingsection = "false"
@@ -325,8 +329,11 @@ Mordecai winces and moves back from the stranger.
 ~ leftslot = "Mordecai"
 MORDECAI: Get away from me, you filthy rat!
 ARAT: Yes. I am Arat.
+-> postrescue
 
 
+= postrescue
+* end of script
 -> END
 
 
