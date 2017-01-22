@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WavesScript : MonoBehaviour {
-    public GameObject FinishPoint;
+    public GameObject ParentFinishPoint;
+    public GameObject ChosenFinishPoint;
     public GameObject Raft;
 
     float MinFinishPositionX = 37.14f;
@@ -15,15 +16,19 @@ public class WavesScript : MonoBehaviour {
     void SetRescueTargetVisible(string target)
     {
         bool found = false;
-        int children = FinishPoint.transform.childCount;
+        int children = ParentFinishPoint.transform.childCount;
+        print("children:" + children);
         for (int i = 0; i < children; ++i) {
-            GameObject child = FinishPoint.transform.GetChild(i).gameObject;
+            GameObject child = ParentFinishPoint.transform.GetChild(i).gameObject;
 
             if (child.name == target) {
+                print("activating:" + child.name);
+                ChosenFinishPoint = child;
                 found = true;
                 child.SetActive(true);
             }
             else {
+                print("deactivating:" + child.name);
                 child.SetActive(false);
             }      
         }
@@ -36,7 +41,7 @@ public class WavesScript : MonoBehaviour {
 
     float GetDistanceRaftToFinalSq()
     {
-        Vector2 dist = FinishPoint.transform.position - Raft.transform.position;
+        Vector2 dist = ChosenFinishPoint.transform.position - Raft.transform.position;
          return dist.SqrMagnitude();
     }
 
@@ -45,13 +50,14 @@ public class WavesScript : MonoBehaviour {
         // scale waves based on difficulty 
 
 
-        // move treasure based on distance
-        float posx = MinFinishPositionX + (MaxFinishPositionX - MinFinishPositionX) * (GameManager.inst==null ? 0.0f : GameManager.inst.distance);
-        FinishPoint.transform.position = new Vector3(posx, FinishPoint.transform.position.y, FinishPoint.transform.position.z);
 
         // draw who we are rescuing
         string target = "mordecai"; //GameManager.inst.rescuetarget
         SetRescueTargetVisible(target);
+
+        // move treasure based on distance
+        float posx = MinFinishPositionX + (MaxFinishPositionX - MinFinishPositionX) * (GameManager.inst == null ? 0.0f : GameManager.inst.distance);
+        ChosenFinishPoint.transform.position = new Vector3(posx, ChosenFinishPoint.transform.position.y, ChosenFinishPoint.transform.position.z);
 
         StartDistanceToTarget = GetDistanceRaftToFinalSq();
     }
@@ -64,7 +70,6 @@ public class WavesScript : MonoBehaviour {
 
         // how far to raft?  tension music
         float dist = GetDistanceRaftToFinalSq() / StartDistanceToTarget;
-        //print(dist);
         if (AudioController.inst) {
             if (dist < .25f) {
                 AudioController.inst.SetLevel(3);

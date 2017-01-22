@@ -53,7 +53,7 @@ public class RaftScript : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.name == "TreasureObject") {
+        if (col.gameObject.name == "TreasureObject" || col.gameObject.name == "mordecai" || col.gameObject.name == "arat") {
             print("success");
             GameManager.inst.CompleteWaveSection(true);
         }
