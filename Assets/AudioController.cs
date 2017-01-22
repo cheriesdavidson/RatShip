@@ -52,8 +52,8 @@ public class AudioController : MonoBehaviour {
 
     public void SetTheme(string theme)
     {
-        setLevel.themeName = theme;
-        eliasPlayer.QueueEvent(setLevel.CreateSetLevelEvent(eliasPlayer.Elias));
+        //setLevel.themeName = theme;
+        //eliasPlayer.QueueEvent(setLevel.CreateSetLevelEvent(eliasPlayer.Elias));
     }
 
     //Somethign something random voice
