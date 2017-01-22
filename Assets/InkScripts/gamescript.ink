@@ -22,11 +22,12 @@ VAR mordecai_onboat = "no"
 
 VAR location = "wreck"
 
+
+VAR rescuecounter = 0
+
 -> chapter1
 
 === chapter1 ===
-
-~ audiolevel = 1
 
 TITLE: You were drowning, and they pulled you from beneath the surface. 
 TITLE: Survive, at all costs.
@@ -58,7 +59,6 @@ Cheddar cries out, but says nothing. He's gone.
 ~ leftslot = "Emmental"
 ~ rightslot = "Cheddar"
 EMMENTAL: Mum, we have to go back! Mum! Rowland, he's --
-~ audiolevel = 2
 Cheddar is just quiet. 
 -
 ~ leftslot = "You"
@@ -812,20 +812,375 @@ It was you who destroyed the ship.
 
 
 === chapter5 ===
+~ leftslot = "empty"
+~ rightslot = "empty"
 { location == "wreck":
 -> wreck
 - else:
 -> left
 }
 
-= wreck
-TITLE: The next morning.
-TITLE: You have remained with the wreck.
-*Temporary end.
--> END
+
 
 = left
 TITLE: The next morning.
 TITLE: You have left the wreck.
-*Temporary end.
+TITLE: You have not found land yet.
+~ leftslot = "Cheddar"
+CHEDDAR: Come on! We need to keep going!
+~ rightslot = "Emmental"
+EMMENTAL: But I'm tired, I can't --
+CHEDDAR: We have to, sweetie. We'll -- we have to.
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.3
+~ distance = 1
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED]
+~ rescuecounter = rescuecounter + 1
+*[FAIL]
+-
+~ paddlingsection = "false"
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: I -- I'm not sure we're going to make it...
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: We shouldn't have left...
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+Arat says nothing, panting quietly in pain.
+}
+~ leftslot = "Cheddar"
+~ rightslot = "empty"
+CHEDDAR: Again! We have to keep trying!
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.5
+~ distance = 0.5
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED]
+~ rescuecounter = rescuecounter + 1
+*[FAIL]
+-
+~ paddlingsection = "false"
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental, it's OK! We're going to make it! 
+Emmental says nothing. Her eyes are shut. 
+-
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.7
+~ distance = 0.2
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED]
+~ rescuecounter = rescuecounter + 1
+*[FAIL]
+-
+~ paddlingsection = "false"
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental?
+Her daughter is not moving.
+~ leftslot = "empty"
+~ rightslot = "empty"
+-> left_ending
+
+
+
+
+= wreck
+TITLE: The next morning.
+TITLE: You have remained with the wreck.
+TITLE: No help has come.
+TITLE: Not until you see it, a shape, waving in the distance.
+~ leftslot = "Cheddar"
+CHEDDAR: Come on! We need to get to them!
+~ rightslot = "Emmental"
+EMMENTAL: But I'm tired, I can't --
+CHEDDAR: We have to, sweetie. We'll -- it's rescue! 
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.3
+~ distance = 1
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED]
+~ rescuecounter = rescuecounter + 1
+*[FAIL]
+-
+~ paddlingsection = "false"
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: I -- I'm not sure we're going to make it...
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: We should have left days ago...
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+Arat says nothing, panting quietly in pain.
+}
+~ leftslot = "Cheddar"
+~ rightslot = "empty"
+CHEDDAR: Again! We have to keep trying!
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.5
+~ distance = 0.5
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED]
+~ rescuecounter = rescuecounter + 1
+*[FAIL]
+-
+~ paddlingsection = "false"
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental, it's OK! We're going to make it! 
+Emmental says nothing. Her eyes are shut. 
+-
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.7
+~ distance = 0.2
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED]
+~ rescuecounter = rescuecounter + 1
+*[FAIL]
+-
+~ paddlingsection = "false"
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental?
+Her daughter is not moving.
+~ leftslot = "empty"
+~ rightslot = "empty"
+-> wreck_ending
+
+
+
+
+
+
+
+
+
+= left_ending
+{ rescuecounter > 1:
+    -> left_rescued
+- else:
+    -> left_notrescued
+}
+
+
+= wreck_ending
+{ rescuecounter > 1:
+    -> wreck_rescued
+- else:
+    -> wreck_notrescued
+}
+
+
+
+= left_rescued
+As Cheddar cries, trying to shake her daughter, you see it.
+You see the side of the great ocean.
+The waves lap against the edge of the wall, beyond which you can see nothing.
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental, please...
+~ leftslot = "empty"
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: What -- what is that?
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: I think -- I think I'm seeing things, I -- 
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: Meow.
+}
+~ leftslot = "empty"
+~ rightslot = "empty"
+A great voice speaks from the heavens. It is the voice of God.
+Its cruel joke is unknown to the rats.
+The kitten recognises just a little of it.
+And so do you.
+It says that the experiment was a complete success.
+It says there were only minimal fatalities.
+One of them is annoyed that Chester got in with the rats again.
+And as great hands reach down to pluck you all from the boat...
+Cheddar clings on to her daughter.
+But they take her away.
+Only you are left in the tank.
+Only you are left, to take the next rats to meet their maker.
+Only you are left, with the lapping of the waves.
+TITLE: The End
+-> credits
+
+
+= wreck_rescued
+As Cheddar cries, trying to shake her daughter, you reach it.
+It's not a rat.
+It's a great circle, floating in the water. Glinting with steel.
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental, please...
+~ leftslot = "empty"
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: What -- what is that?
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: I think -- I think I'm seeing things, I -- 
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: Meow.
+}
+
+~ leftslot = "empty"
+~ rightslot = "empty"
+A great voice speaks from the heavens. It is the voice of God.
+It swears, saying it's dropped its damned watch.
+Its cruel joke is unknown to the rats.
+The kitten recognises just a little of it.
+And so do you.
+It says that the experiment was a partial success.
+The rats exhibited minimal wishes to escape.
+It says there were only minimal fatalities.
+One of them is annoyed that Chester got in with the rats again.
+And as great hands reach down to pluck you all from the boat...
+Cheddar clings on to her daughter.
+But they take her away.
+Only you are left in the tank.
+Only you are left, to take the next rats to meet their maker.
+Only you are left, with the lapping of the waves.
+TITLE: The End
+-> credits
+
+
+
+
+= left_notrescued
+As Cheddar cries, trying to shake her daughter, nothing happens.
+You have failed to find land.
+You have failed to please your employers.
+And for that, you don't know what will happen...
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental, please...
+~ leftslot = "empty"
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: Cheddar, I...
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: Allow me to help! I know a lot of medicinal techniques!
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+Arat only cries.
+}
+~ leftslot = "empty"
+~ rightslot = "empty"
+
+You drift in the oceans, and one by one you all go to sleep, unable to do anything else. 
+You hope that God will forgive you.
+You hope that they will save you, as they always do.
+As your eyes shut, you see their great hands descend from the sky. 
+You hear their language.
+The kitten recognises just a little of it.
+And so do you.
+It says that the experiment was a failure
+It says most of them are dead.
+One of them is annoyed that Chester got in with the rats again.
+And as great hands reach down to pluck you all from the boat...
+Cheddar clings on to her daughter, on to life.
+But they take her away.
+Only you are left in the tank, wondering if they will save you.
+Only you are left, to take the next rats to meet their maker.
+Only you are left, with the lapping of the waves.
+TITLE: The End
+-> credits
+
+
+= wreck_notrescued
+As Cheddar cries, trying to shake her daughter, nothing happens.
+You have failed to leave at all.
+You have failed to please your employers.
+And for that, you don't know what will happen...
+~ leftslot = "Cheddar"
+CHEDDAR: Emmental, please...
+~ leftslot = "empty"
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: Cheddar, I...
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: Allow me to help! I know a lot of medicinal techniques!
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+Arat only cries.
+}
+~ leftslot = "empty"
+~ rightslot = "empty"
+
+You drift in the oceans, and one by one you all go to sleep, unable to do anything else. 
+You hope that God will forgive you.
+You hope that they will save you, as they always do.
+As your eyes shut, you see their great hands descend from the sky. 
+You hear their language.
+The kitten recognises just a little of it.
+And so do you.
+It says that the experiment was a total failure.
+It says most of them are dead.
+One of them is annoyed that Chester got in with the rats again.
+And as great hands reach down to pluck you all from the boat...
+Cheddar clings on to her daughter, on to life.
+But they take her away.
+Only you are left in the tank, wondering if they will save you.
+Only you are left, to take the next rats to meet their maker.
+Only you are left, with the lapping of the waves.
+TITLE: The End
+-> credits
+
+
+= credits
+TITLE: Written by Greg Buchanan
+TITLE: Programming by Amy Philips and Cherie Davidson
+TITLE: Art by Aiden Kohler
+TITLE: Music by Holley Gray
+TITLE: Made at Guildford #GGJ17
+TITLE: Thanks for playing!
 -> END
