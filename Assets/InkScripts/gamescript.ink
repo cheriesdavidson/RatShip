@@ -3,7 +3,7 @@ VAR rightslot = "empty"
 VAR elias = 1
 VAR textspeed = 1
 
-VAR paddlingsection = false
+VAR paddlingsection = "false"
 VAR difficulty = 0
 VAR distance = 0
 

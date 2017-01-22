@@ -70,20 +70,6 @@ public class DialogueController : MonoBehaviour {
         //return;
         //eliasPlayer.QueueEvent(setLevel.CreateSetLevelEvent(eliasPlayer.Elias));
 
-        //DEAL WITH STORY VARIABLES
-        //CHANGE SCENE
-
-        //ELIAS
-        if (GameManager.inst.story.variablesState["audiolevel"] != null)
-        {
-            EliasController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiolevel"]);
-        }
-
-        if (GameManager.inst.story.variablesState["audiotheme"] != null)
-        {
-            EliasController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiotheme"]);
-        }
-
         //TEXT SPEED
         if (GameManager.inst.story.variablesState["textspeed"] != null)
             currentTextSpeed = defaultTextSpeed * (int)GameManager.inst.story.variablesState["textspeed"];
@@ -132,7 +118,7 @@ public class DialogueController : MonoBehaviour {
 
             if (GameManager.inst.story.variablesState["paddlingsection"] != null)
             {
-                Debug.Log(GameManager.inst.story.variablesState["paddlingsection"]);
+                Debug.Log((string)GameManager.inst.story.variablesState["paddlingsection"]);
 
                 if ((string)GameManager.inst.story.variablesState["paddlingsection"] == "true") {
 
@@ -148,6 +134,10 @@ public class DialogueController : MonoBehaviour {
                     }
                     else
                     {
+                        characterLeft.gameObject.SetActive(false);
+                        characterRight.gameObject.SetActive(false);
+                        speakerLabel.gameObject.SetActive(false);
+
                         if (GameManager.inst.paddlingSuccess)
                             GameManager.inst.story.ChooseChoiceIndex(0);
                         else
@@ -245,11 +235,12 @@ public class DialogueController : MonoBehaviour {
             speakerLabel.text = new string(speakerName);
             currentDialogue = splits[1].Trim();
             textBox.fontStyle = FontStyle.Normal;
-
+            speakerLabel.gameObject.SetActive(true);
         }
         else
         {
             //narrative - all appears at once
+            speakerLabel.gameObject.SetActive(false);
             currentDialogue = splits[0].Trim();
             textBox.fontStyle = FontStyle.Italic;
         }
