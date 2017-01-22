@@ -3,7 +3,7 @@ VAR rightslot = "empty"
 VAR elias = 1
 VAR textspeed = 1
 
-VAR paddlingsection = false
+VAR paddlingsection = "false"
 VAR difficulty = 0
 VAR distance = 0
 
@@ -343,11 +343,7 @@ Mordecai winces and moves back from the stranger.
 ~ leftslot = "Mordecai"
 MORDECAI: Get away from me, you filthy rat!
 ARAT: Yes. I am Arat.
--> tempend
-
-= tempend
-*end for Now
--> END
+-> postrescue
 
 
 = postrescue
@@ -374,8 +370,91 @@ MORDECAI: My suit! I'm absolutely soaked!
 
 { arat_onboat == "yes":
 ~ rightslot = "Arat"
-ARAT: 
+ARAT: Please give me treat. I am scared and lost. 
 }
+
+~ leftslot = "You"
+~ rightslot = "empty"
+YOU: Who are all of you, anyway?
+
+
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: My name is Rowly. Pleased to meet you! 
+ROWLAND: Despite the, er, circumstances...
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: Mordecai Johnson, at your service. 
+MORDECAI: I do business all over the world.
+MORDECAI: I'm a big deal, you know.
+MORDECAI: Perhaps you've heard of me?
+*[IMPRESSIVE]
+YOU: Um, impressive...
+MORDECAI: I sell the best in anti-cat detectors, my good chap!
+{ arat_onboat == "yes":
+~ leftslot = "Arat"
+ARAT: I think rats are best friends.
+MORDECAI: I like your optimistic attitude, sir!
+~ leftslot = "You"
+}
+*[STOP BOASTING]
+YOU: Stop boasting. Rats have just died.
+MORDECAI: Why I -- I never! This is really the height of -- of --
+MORDECAI: Dash it all!
+}
+-
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: I am Arat.
+*[GOOD TO MEET YOU]
+YOU: It's nice to meet you, Arat.
+ARAT: Yes. Hello. I like, I like cheese and rat things.
+*[WHAT DO YOU DO?]
+ARAT: I do rat things. I eat cheese and run in mazes. Hello.
+}
+-
+~ rightslot = "Cheddar"
+CHEDDAR: And I'm Cheddar. This is my pup Emmental.
+~ rightslot = "Emmental"
+EMMENTAL: Hi!
+~ rightslot = "Cheddar"
+CHEDDAR: Who are -you-, anyway? You haven't said.
+-
+*[TRUTH]
+YOU: I don't have a name.
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: That's, well gosh, why don't you have one, old fellow?
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: I have name. I am Arat. I like to hide in boxes.
+}
+
+*[LIE]
+YOU: I'm Nibbles.
+
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: Pleased to make your acquaintance, Nibbles!
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: I do not nibbles rats. Rats are not food. 
+}
+-
+~ leftslot = "empty"
+~ rightslot = "empty"
+Cheddar is about to say something when a fog horn blasts out across the area. 
+
+*end for Now
 -> END
 
 
