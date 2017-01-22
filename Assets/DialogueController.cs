@@ -199,6 +199,7 @@ public class DialogueController : MonoBehaviour {
                     waitingForChoice = true;
                     ShowChoiceDialogue();
                     playerReadyToContinue = true;
+                    GameManager.inst.waveSectionComplete = false;
                 }
             }
             
