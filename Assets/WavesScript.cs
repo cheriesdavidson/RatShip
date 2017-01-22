@@ -9,11 +9,13 @@ public class WavesScript : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        // scale waves based on difficulty
+
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         // move waves leftwards
         transform.position = new Vector3(transform.position.x - Time.deltaTime * WAVE_VELOCITY, transform.position.y, transform.position.z);

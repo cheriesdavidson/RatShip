@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class RaftScript : MonoBehaviour {
 
@@ -9,9 +10,11 @@ public class RaftScript : MonoBehaviour {
     public GameObject PaddleSuccess;
     public GameObject PaddleFail;
     public WavesScript waveScript;
-    public int SuccessCount = 0;
-    public int FailCount = 0;
-    public bool GotTreasure = false;
+    public Text Speed;
+
+    static float MaxSlowdown = 1.47f;
+    static float MinSlowdown = 0.0f;
+    float SlowdownPerSecond = 0.0f;
 
     Vector2 GetWaveNormal()
     {
@@ -25,20 +28,23 @@ public class RaftScript : MonoBehaviour {
         return GetWaveNormal().x > 0.0f;
     }
 
-	// Use this for initialization
-	void Start () {
-        SuccessCount = 0;
-        FailCount = 0;
-        GotTreasure = false;
+    void UpdateVelocityText()
+    {
+        Speed.text = "Speed: " + waveScript.WAVE_VELOCITY;
     }
 
+	// Use this for initialization
+	void Start () {
+        // more difficult, less time
+        SlowdownPerSecond = MinSlowdown + (MaxSlowdown - MinSlowdown) * GameManager.difficulty;
+        UpdateVelocityText();
+    }
 
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.name == "TreasureObject") {
             print("success");
-            GotTreasure = true;
-            SceneManager.LoadScene("Dialogue");
+            //GameManager.CompleteWaves(true);
         }
     }
 
@@ -47,6 +53,13 @@ public class RaftScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+        // slowdown each frame (except the first few frames)
+        if(Time.timeSinceLevelLoad > 0.5f)
+            waveScript.WAVE_VELOCITY -= SlowdownPerSecond * Time.deltaTime;
+
+        UpdateVelocityText();
+
         // line ourselves up with wave normal
         Vector2 wave_normal = GetWaveNormal();
         Quaternion desired =  Quaternion.FromToRotation(Vector3.up, wave_normal);
@@ -80,15 +93,13 @@ public class RaftScript : MonoBehaviour {
             // successfully?
             if(descending) {
                 LastPaddleSuccess = Time.time;
-                SuccessCount++;
                 waveScript.WAVE_VELOCITY += 0.5f;
             } else {
                 LastPaddleFail = Time.time;
-                FailCount++;
                 waveScript.WAVE_VELOCITY -= 0.5f;
                 if(waveScript.WAVE_VELOCITY<=0.0f) { 
                     print("failure");
-                    SceneManager.LoadScene("Dialogue");
+                    //GameManager.CompleteWaves(false);
                 }
             }
         }
