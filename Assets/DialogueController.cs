@@ -124,13 +124,7 @@ public class DialogueController : MonoBehaviour {
 
                     if (!GameManager.inst.waveSectionComplete)
                     {
-
-                        //load up the scene, give it difficulty
-                        if (GameManager.inst.story.variablesState["difficulty"] != null)
-                            //load wave level, return choice somehow?
-                            GameManager.inst.LoadWaveSection((float)GameManager.inst.story.variablesState["difficulty"]);
-                        else
-                            GameManager.inst.LoadWaveSection();
+                        GameManager.inst.LoadWaveSection();
                     }
                     else
                     {

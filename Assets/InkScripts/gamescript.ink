@@ -1,6 +1,7 @@
 VAR leftslot = "empty"
 VAR rightslot = "empty"
-VAR elias = 1
+VAR audiolevel = 0
+VAR audiotheme = "dialogue"
 VAR textspeed = 1
 
 VAR paddlingsection = "false"
@@ -12,12 +13,16 @@ VAR cheddar = "alive"
 VAR arat = "alive"
 VAR mordecai = "alive"
 
+VAR rowland_onboat = "yes"
+VAR cheddar_onboat = "yes"
+VAR arat_onboat = "no"
+VAR mordecai_onboat = "no"
+
 -> chapter1
 
 === chapter1 ===
 
 = event1
-~ elias = 1
 ~ leftslot = "Cheddar"
 ~ rightslot = "Rowland"
 
@@ -35,6 +40,7 @@ ROWLAND: I'm trying as fast as I can, please, stop criticising me...
 YOU: You can do it, Rowland! Come on, chap!
 ROWLAND: I can't, I -- 
 ~ rightslot = "empty"
+~ rowland_onboat = "no"
 Rowland lets go of the side of the boat, holding his paws to his face to stop the tears.
 A great wave overtakes you all.
 Roland falls beneath it, swept from the side of the boat.
@@ -137,6 +143,7 @@ You see two figures struggling in the water. One of them, a gentleman, is strugg
 MORDECAI: I say! Please, good fellow! Help me on to your craft!
 ~ rightslot = "Cheddar"
 CHEDDAR: Give me your arm, I'll -- hghh - Christ, you're heavy...
+~ mordecai_onboat = "yes"
 MORDECAI: Oh, thank you, m'lady! I --
 The shouts continue, however. In the distance, you see another figure splashing around.
 It cries out with an unratly sound.
@@ -193,8 +200,8 @@ MORDECAI: Hurry, please! My shoes are being damaged, good sirs!
 ~ difficulty = 0.6
 ~ distance = 0
 ~ paddlingsection = "true"
-*[SUCCEED] -> chapter3.mordecai_success
-*[FAIL] -> chapter3.mordecai_fail
+**[SUCCEED] -> chapter3.mordecai_success
+**[FAIL] -> chapter3.mordecai_fail
 
 *[SAVE ARAT]
 ~ leftslot = "empty"
@@ -204,8 +211,9 @@ ARAT: Meooow!!! Meoww!!!
 ~ difficulty = 0.6
 ~ distance = 0
 ~ paddlingsection = "true" 
-*[SUCCEED] -> chapter3.arat_success
-*[FAIL] -> chapter3.arat_fail
+-
+**[SUCCEED] -> chapter3.arat_success
+**[FAIL] -> chapter3.arat_fail
 
 
 === chapter3 ===
@@ -218,6 +226,7 @@ You reach Mordecai in good time, and he swims towards your boat.
 MORDECAI: I say! Please, good fellow! Help me on to your craft!
 ~ rightslot = "Cheddar"
 CHEDDAR: Give me your arm, I'll -- hghh - Christ, you're heavy...
+~ mordecai_onboat = "yes"
 MORDECAI: Oh, thank you, m'lady! I --
 The shouts continue, however. In the distance, you see the other figure cry out.
 ~ leftslot = "Arat"
@@ -236,6 +245,7 @@ You just reach Mordecai in time, managing to grab him before he falls beneath th
 MORDECAI: I say! You took your sweet time!
 ~ rightslot = "Cheddar"
 CHEDDAR: Give me your arm you ungrateful twit, I'll -- hghh - Christ, you're heavy...
+~ mordecai_onboat = "yes"
 MORDECAI: I could say the same about you, but I am a gentleman!
 The shouts continue, however. In the distance, you see the other figure cry out.
 ~ leftslot = "Arat"
@@ -256,6 +266,7 @@ CHEDDAR: Give me your arm! Oww, you're -- I need help!
 CHEDDAR: Three, two, one, pull!!!
 You help Cheddar pull the "rat" onto to the raft. 
 ~ rightslot = "Arat"
+~ arat_onboat = "yes"
 ARAT: Meowwww.
 The stranger starts to rub their cheeks over all of you, purring.
 The shouts continue, however. In the distance, you see the other figure cry out.
@@ -276,6 +287,7 @@ CHEDDAR: Give me your arm! Oww, you're -- I need help!
 CHEDDAR: Three, two, one, pull!!!
 You help Cheddar pull the "rat" onto to the raft. 
 ~ rightslot = "Arat"
+~ arat_onboat = "yes"
 ARAT: Meowwww.
 The stranger starts to rub their cheeks over all of you, purring.
 The shouts continue, however. In the distance, you see the other figure cry out.
@@ -300,6 +312,7 @@ CHEDDAR: Three, two, one, pull!!!
 You help Cheddar pull the "rat" onto to the raft. 
 ~ leftslot = "empty"
 ~ rightslot = "Arat"
+~ arat_onboat = "yes"
 ARAT: Meowwww.
 The stranger starts to rub their cheeks over all of you, purring.
 Mordecai winces and moves back from the stranger.
@@ -321,6 +334,7 @@ CHEDDAR: Lovely. How about you? You going to help me?
 ~ leftslot = "You"
 CHEDDAR: Three, two, one, pull!!!
 You help Cheddar pull the "rat" onto to the raft. 
+~ arat_onboat = "yes"
 ~ leftslot = "empty"
 ~ rightslot = "Arat"
 ARAT: Meowwww.
@@ -333,7 +347,114 @@ ARAT: Yes. I am Arat.
 
 
 = postrescue
-* end of script
+~ leftslot = "empty"
+~ rightslot = "empty"
+At least some people made it. You didn't think you would. 
+You're not sure if you deserved to.
+Cheddar takes control. She could be a problem. 
+~ leftslot = "Cheddar"
+~ rightslot = "empty"
+CHEDDAR: Is everyone OK? Is anyone injured?
+~ rightslot = "Emmental" 
+EMMENTAL: I'm OK, mumma!
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: I - I suppose so! But my arms are pretty darn tired!
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: My suit! I'm absolutely soaked!
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: Please give me treat. I am scared and lost. 
+}
+
+~ leftslot = "You"
+~ rightslot = "empty"
+YOU: Who are all of you, anyway?
+
+
+
+{ rowland_onboat == "yes":
+~ rightslot = "Rowland"
+ROWLAND: My name is Rowly. Pleased to meet you! 
+ROWLAND: Despite the, er, circumstances...
+}
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: Mordecai Johnson, at your service. 
+MORDECAI: I do business all over the world.
+MORDECAI: I'm a big deal, you know.
+MORDECAI: Perhaps you've heard of me?
+*[IMPRESSIVE]
+YOU: Um, impressive...
+MORDECAI: I sell the best in anti-cat detectors, my good chap!
+{ arat_onboat == "yes":
+~ leftslot = "Arat"
+ARAT: I think rats are best friends.
+MORDECAI: I like your optimistic attitude, sir!
+~ leftslot = "You"
+}
+*[STOP BOASTING]
+YOU: Stop boasting. Rats have just died.
+MORDECAI: Why I -- I never! This is really the height of -- of --
+MORDECAI: Dash it all!
+}
+-
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: I am Arat.
+*[GOOD TO MEET YOU]
+YOU: It's nice to meet you, Arat.
+ARAT: Yes. Hello. I like, I like cheese and rat things.
+*[WHAT DO YOU DO?]
+ARAT: I do rat things. I eat cheese and run in mazes. Hello.
+}
+-
+~ rightslot = "Cheddar"
+CHEDDAR: And I'm Cheddar. This is my pup Emmental.
+~ rightslot = "Emmental"
+EMMENTAL: Hi!
+~ rightslot = "Cheddar"
+CHEDDAR: Who are -you-, anyway? You haven't said.
+-
+*[TRUTH]
+YOU: I don't have a name.
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: That's, well gosh, why don't you have one, old fellow?
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: I have name. I am Arat. I like to hide in boxes.
+}
+
+*[LIE]
+YOU: I'm Nibbles.
+
+
+{ mordecai_onboat == "yes":
+~ rightslot = "Mordecai"
+MORDECAI: Pleased to make your acquaintance, Nibbles!
+}
+
+{ arat_onboat == "yes":
+~ rightslot = "Arat"
+ARAT: I do not nibbles rats. Rats are not food. 
+}
+-
+~ leftslot = "empty"
+~ rightslot = "empty"
+Cheddar is about to say something when a fog horn blasts out across the area. 
+
+*end for Now
 -> END
 
 
