@@ -38,7 +38,7 @@ public class RaftScript : MonoBehaviour {
         if (col.gameObject.name == "TreasureObject") {
             print("success");
             GotTreasure = true;
-            SceneManager.LoadScene("blank");
+            SceneManager.LoadScene("Dialogue");
         }
     }
 

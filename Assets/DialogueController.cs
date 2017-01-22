@@ -76,10 +76,26 @@ public class DialogueController : MonoBehaviour {
         //check if we're writting stuff
         //{writing functions}
         //return;
+        //eliasPlayer.QueueEvent(setLevel.CreateSetLevelEvent(eliasPlayer.Elias));
 
+        //DEAL WITH STORY VARIABLES
+        //ELIAS
+        if (story.variablesState["audiolevel"] != null)
+        {
+            EliasController.inst.SetLevel((int)story.variablesState["audiolevel"]);
+        }
+
+        if (story.variablesState["audiotheme"] != null)
+        {
+            EliasController.inst.SetLevel((int)story.variablesState["audiotheme"]);
+        }
+
+        //TEXT SPEED
         if (story.variablesState["textspeed"] != null)
             currentTextSpeed = defaultTextSpeed * (int)story.variablesState["textspeed"];
 
+
+        //DEAL WITH ACTUAL GAME RENDERING
         if (printing)
         {
             if (Time.time > nextLetterTime)
@@ -112,7 +128,6 @@ public class DialogueController : MonoBehaviour {
 
         if (story.canContinue && !printing && playerReadyToContinue)
         {
-            Debug.Log("Trying to continue story");
             ProcessStoryLine();
             return;
         }
@@ -122,8 +137,6 @@ public class DialogueController : MonoBehaviour {
         {
             //hide the player ready thing
             playerTapButton.SetActive(false);
-
-            Debug.Log("New choice");
             waitingForChoice = true;
             ShowChoiceDialogue();
             playerReadyToContinue = true;
@@ -200,14 +213,14 @@ public class DialogueController : MonoBehaviour {
             char[] speakerName = splits[0].ToString().ToLower().ToCharArray();
             speakerName[0] = speakerName[0].ToString().ToUpper()[0];
             speakerLabel.text = new string(speakerName);
-            currentDialogue = splits[1];
+            currentDialogue = splits[1].Trim();
             textBox.fontStyle = FontStyle.Normal;
 
         }
         else
         {
             //narrative - all appears at once
-            currentDialogue = splits[0];
+            currentDialogue = splits[0].Trim();
             textBox.fontStyle = FontStyle.Italic;
         }
 
