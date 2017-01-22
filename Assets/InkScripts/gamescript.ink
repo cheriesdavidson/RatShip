@@ -3,12 +3,12 @@ VAR rightslot = "empty"
 VAR elias = 1
 VAR textspeed = 1
 
+VAR paddlingsection = false
 
 VAR rowland = "alive"
 VAR cheddar = "alive"
 VAR arat = "alive"
 VAR mordecai = "alive"
-
 
 -> chapter1
 
@@ -94,6 +94,7 @@ Failure can have unexpected consequences.
 
 === chapter2 ===
 = initialsetup
+~ paddlingsection = true 
 *[SUCCEED] ->success
 *[FAIL] -> fail
 
