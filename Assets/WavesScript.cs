@@ -18,6 +18,8 @@ public class WavesScript : MonoBehaviour {
         float posx = MinFinishPositionX + (MaxFinishPositionX - MinFinishPositionX) * GameManager.inst.distance;
         FinishPoint.transform.position = new Vector3(posx, FinishPoint.transform.position.y, FinishPoint.transform.position.z);
 
+        // draw who we are rescuing
+        //rescuetarget
     }
 
     // Update is called once per frame
