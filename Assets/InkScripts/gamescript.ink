@@ -505,6 +505,7 @@ TITLE: You will all die soon without sustenance.
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 TITLE: TWO DAYS LATER...
+TITLE: You remained with the wreck.
 TITLE: It has been two days since the sinking.
 TITLE: You have no food or water left. 
 TITLE: Help has not come.
@@ -520,6 +521,46 @@ TITLE: You will all die soon without sustenance.
 - else:
 -> 2dayslater_mordecai
 }
+
+= 2dayslater_mordecai
+In the night, you stay awake to keep watch.
+Things were not supposed to happen like this.
+Mordecai wakes up, yawning, and sees you.
+~ leftslot = "You"
+~ rightslot = "Mordecai"
+MORDECAI: Quiet out here, isn't it.
+*[YES]
+YOU: I suppose so, yes.
+*[SAY NOTHING]
+You say nothing.
+-
+MORDECAI: I'm sorry if I've come across badly so far.
+MORDECAI: I'm just -- it's just been a stressful time.
+MORDECAI: You can understand that, can't you?
+*[IT'S OK]
+YOU: I understand. It's fine. Everything will be fine.
+*[SAY NOTHING]
+You say nothing.
+MORDECAI: I suppose you don't. You're a mean old rat, you know.
+-
+Mordecai feels inside his pockets and after a little while finds something.
+He pulls out a wallet.
+He opens it to show you a photo of a tall rat, and a small mouse.
+MORDECAI: We adopted her when she was just a pup. 
+MORDECAI: We couldn't have one of our own.
+MORDECAI: I hope... I hope I get out of this.
+MORDECAI: I hope I get to see them again.
+*[YOU WILL]
+*[SAY NOTHING]
+-
+You talk for a while longer, but Mordecai soon wants to go back to sleep.
+As you sit up, you think about life.
+You think about what you did to these people.
+You wonder if they'd ever forgive you, if they knew.
+It was you who destroyed the ship.
+-> chapter5
+
+
  
 = 2dayslater_arat
 In the night, you stay awake to keep watch.
@@ -529,17 +570,259 @@ Arat wakes up, stretching and arching their back.
 ~ rightslot = "Arat"
 ARAT: Hello.
 *[HELLO]
-*[GO BACK TO SLEEP]
+YOU: Erm, hi?
+*[SAY NOTHING]
+You are silent.
+-
+ARAT: I am hungry please can I have a treat I am scared also.
+*[WE ALL ARE]
+ARAT: Am I a good rat?
+**[YES]
+-> arat_happy
+**[NO]
+-> arat_unhappy
+*["A TREAT"?]
+ARAT: Yes my human gave me them but they went. 
+ARAT: I do not know when they are back. I am sad.
+**[SYMPATHY]
+YOU: I'm sorry. You must miss them.
+ARAT: Yes.
+YOU: It's -- it's OK. It'll be OK.
+-> arat_happy
+**[SUSPICION]
+YOU: You don't sound very much like a rat.
+-> arat_unhappy
+
+= arat_happy
+Arat begins to purr for a little while, beginning to move their cheeks forward to rub you.
+Arat stops suddenly, looking sad. 
+-> arat_revelation
+
+= arat_unhappy
+Arat looks upset, shaking their head and looking down at the floor of the boat. 
+-> arat_revelation
+
+= arat_revelation
+ARAT: Can I tell you a secret?
+ARAT: Please don't tell anyone or make fun of me.
+ARAT: I'm... I'm... -meow-
+ARAT: I'm not actually a rat.
+ARAT: I'm sorry for lying.
+ARAT: My mum told me not to. Said I was just a kitten.
+ARAT: I just wanted to be friends.
+ARAT: Rats always look like they're having fun.
+ARAT: Now I'm all on my own, now.
+Arat begins to cry a little, wiping tears from their whiskers.
+ARAT: I'm.. -meow- ... I'm so hungry.
+
+{ mordecai_onboat == "yes":
+-> arat_revelation_mordecai
+- else:
+-> arat_revelation_alone
+}
+
+= arat_revelation_alone
+*[IT'LL BE OK]
+YOU: It'll be OK, Arat, it'll all be fine...
+ARAT: Do you promise?
+**[YES]
+YOU: Yes, of course...
+**[NO]
+YOU: I can't. But I'll do my best to make it OK.
+*[ARE YOU DANGEROUS?]
+ARAT: Meow!! I'd never hurt a friend!
+-
+Arat rubs their cheeks on you to demonstrate their affection.
+Arat falls asleep near you, purring throughout the night.
+As you sit up, you think about life.
+You think about what you did to these people.
+You wonder if they'd ever forgive you, if they knew.
+It was you who destroyed the ship.
+-> chapter5
+
+
+
+= arat_revelation_mordecai
+There is a sudden cry from elsewhere on the boat.
+~ leftslot = "Mordecai"
+MORDECAI: Ah hah! You thought you'd eat us in our sleeps, did you?
+ARAT: What? No! Rats are friends!
+MORDECAI: Everyone, wake up! This beast is a good for nothing cat!
+~ leftslot = "Emmental"
+EMMENTAL: Mum, I'm scared, I --
+~ leftslot = "Mordecai"
+MORDECAI: It can't stay on this boat. It needs to go.
+~ leftslot = "Cheddar"
+CHEDDAR: Now just calm down for a second...
+~ leftslot = "Mordecai"
+MORDECAI: Calm? You want me to be calm? I'll do it myself.
+Mordecai moves towards Arat, who backs away, meowing in fear.
+Mordecai pulls out a knife from his pocket. 
+*[SAVE ARAT]
+You try grabbing the knife from Mordecai, but as he tries slashing around him...
+Mordecai loses his footing.
+~ mordecai_onboat = "no"
+~ leftslot = "empty"
+~ rightslot = "empty"
+He falls from the boat, down into the waves. 
+*[DO NOTHING]
+You do nothing, and as Mordecai approaches Arat, the kitten stumbles back in fear.
+Arat loses thier footing.
+~ arat_onboat = "no"
+~ leftslot = "empty"
+~ rightslot = "empty"
+They fall from the boat, down into the waves.
+-
+~ leftslot = "Emmental"
+EMMENTAL: We have to rescue them! Mum, we --
+~ rightslot = "Cheddar"
+CHEDDAR: No. We need to paddle away.
+Cheddar would never forget how her daughter looked at her in that moment.
+That mixture of surprise and shame.
+EMMENTAL: Mum, we --
+CHEDDAR: I said we need to paddle! They're dangerous!
+~ leftslot = "empty"
+~ rightslot = "empty"
+-
+~ difficulty = 0.3
+~ distance = 0.7
+~ rescuetarget = ""
+~ paddlingsection = "true"
+*[SUCCEED] -> leftdrowner
+*[FAIL] -> remaineddrowner
+
+= leftdrowner
+~ paddlingsection = "false"
+~ location = "left"
+{ mordecai_onboat == "yes":
+~ leftslot = "Cheddar"
+CHEDDAR: I think -- hphh -- I think we can stop now.
+~ rightslot = "Mordecai"
+MORDECAI: Anywhere to get away from a blasted cat.
+~ leftslot = "Emmental"
+EMMENTAL: But Arat didn't hurt us at all! Arat was scared!
+MORDECAI: Hmph. Maybe you should've jumped in the water with it.
+~ leftslot = "Cheddar"
+CHEDDAR: What did you just say to my daughter?
+Cheddar looms over Mordecai. Mordecai gulps.
+MORDECAI: Erm -- erm nothing, my lady. 
+CHEDDAR: That's right. Don't talk to her again.
+~ leftslot = "empty"
+~ rightslot = "empty"
+They argue back and forth throughout the night.
+Eventually, sleep takes them all, the boat a little quieter.
+Less warm for Arat's absence. 
+- else:
+~ leftslot = "Cheddar"
+CHEDDAR: I think -- hphh -- I think we can stop now.
+~ rightslot = "Arat"
+ARAT: He -- is the bad rat gone? He was going to --
+~ leftslot = "Emmental"
+EMMENTAL: But he'll die if we leave him!
+ARAT: I don't -- meow -- I didn't want any of this to...
+Arat begins to cry again.
+~ leftslot = "Cheddar"
+CHEDDAR: It's OK, Arat. It's OK.
+Arat shifts towards Cheddar, who begins to stroke Arat's fur.
+CHEDDAR: You're a good kitten. 
+Arat purrs.
+~ leftslot = "empty"
+~ rightslot = "empty"
+They go like this throughout the night, until Araft falls asleep.
+Eventually, sleep takes them all, the boat a little quieter.
+}
+As you sit up, you think about life.
+You think about what you did to these people.
+You wonder if they'd ever forgive you, if they knew.
+It was you who destroyed the ship.
+-> chapter5
+
+= remaineddrowner
+~ paddlingsection = "false"
+{ mordecai_onboat == "yes":
+You do not go that far.
+After a while, you hear splashing.
+Arat pokes their head over the surface, crying out.
+~ leftslot = "Arat"
+ARAT: Help me! Meow!! I won't hurt anyone!
+~ rightslot = "Cheddar"
+CHEDDAR: Take my arm, Arat! Help me, all of you!
+~ leftslot = "Mordecai"
+MORDECAI: Are you mad? That thing will eat us!
+CHEDDAR: The only dangerous one here is you. 
+CHEDDAR: You should be ashamed of yourself!
+CHEDDAR: Arat's just a child! Have you no child of your own?
+MORDECAI: I -- I didn't do anything, I was just warning it...
+CHEDDAR: Shut up and help me pull!
+After a moment's hesitation, Mordecai throws his knife away.
+Mordecai moves forward and helps lift Arat from the water. 
+~ arat_onboat = "yes"
+~ rightslot = "Arat"
+ARAT: Meoww!!! Thank you!
+Arat starts to rub their cheeks over Mordecai, who tries to get away.
+Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
+MORDECAI: I didn't -- I -- Please forgive me, won't you?
+ARAT: Meooowwwww
+~ leftslot = "empty"
+~ rightslot = "empty"
+For many hours, Mordecai talks to Arat, telling them about his daughter.
+He says his daughter is a mouse. He adopted her after his mother was killed.
+Arat is already asleep when Mordecai says this.
+Eventually, sleep takes them all, the boat a little calmer.
+- else:
+You do not go that far.
+After a while, you hear splashing.
+Mordecai pokes his head over the surface, crying out.
+~ leftslot = "Mordecai"
+ARAT: Help me! Please, I can't -- I can't swim very well!
+~ rightslot = "Cheddar"
+CHEDDAR: Take my arm, Mordecai! Help me, all of you!
+~ leftslot = "Arat"
+ARAT: But he -- the bad rat wants to kill me!
+CHEDDAR: He won't! I won't let him, OK?
+ARAT: I'm scared, meow!!
+CHEDDAR: So was he! If everyone stops being scared, we might get out of this!
+CHEDDAR: So come on and help me pull!
+After a moment's hesitation, Arat bumbles forward.
+Arat helps lift Mordecai from the water.
+~ mordecai_onboat = "yes"
+~ rightslot = "Mordecai"
+MORDECAI: I -- I thank you, cat. You saved me.
+Arat starts to lick the water from Mordecai, who flinches away.
+Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
+MORDECAI: I didn't -- I -- Please forgive me, won't you?
+ARAT: Meooowwwww
+~ leftslot = "empty"
+~ rightslot = "empty"
+For many hours, Mordecai talks to Arat, telling them about his daughter.
+He says his daughter is a mouse. He adopted her after his mother was killed.
+Arat is already asleep when Mordecai says this.
+Eventually, sleep takes them all, the boat a little calmer.
+}
+As you sit up, you think about life.
+You think about what you did to these people.
+You wonder if they'd ever forgive you, if they knew.
+It was you who destroyed the ship.
+-> chapter5
+
+
+
+
+=== chapter5 ===
+{ location == "wreck":
+-> wreck
+- else:
+-> left
+}
+
+= wreck
+TITLE: The next morning.
+TITLE: You have remained with the wreck.
+*Temporary end.
 -> END
 
-
-
-
-
-
-
-
-
-= 2dayslater_mordecai
-
+= left
+TITLE: The next morning.
+TITLE: You have left the wreck.
+*Temporary end.
 -> END
