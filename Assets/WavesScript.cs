@@ -52,7 +52,7 @@ public class WavesScript : MonoBehaviour {
 
 
         // draw who we are rescuing
-        string target = "mordecai"; //GameManager.inst.rescuetarget
+        string target = GameManager.inst == null ? "mordecai" : GameManager.inst.rescuetarget;
         SetRescueTargetVisible(target);
 
         // move treasure based on distance
