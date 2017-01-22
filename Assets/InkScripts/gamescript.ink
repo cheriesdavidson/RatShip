@@ -3,7 +3,9 @@ VAR rightslot = "empty"
 VAR elias = 1
 VAR textspeed = 1
 
-VAR paddlingsection = "false"
+VAR paddlingsection = false
+VAR difficulty = 0
+VAR distance = 0
 
 VAR rowland = "alive"
 VAR cheddar = "alive"
@@ -88,18 +90,22 @@ CHEDDAR: It'll... it'll be OK. You'll do your best, like you always do. Now come
 
 ~ leftslot = "empty"
 ~ rightslot = "empty"
-You need to get away from the wreckage. Press X repeatedly to build momentum, and release to ride the wave away. 
-Failure can have unexpected consequences.
+You need to get away from the wreckage. 
+When the prompt shows, press any key repeatedly to paddle.
+Failure to reach the end can have unexpected consequences.
 -> chapter2
 
 === chapter2 ===
 = initialsetup
+~ difficulty = 0.4
+~ distance = 0.4
 ~ paddlingsection = "true"
 *[SUCCEED] ->success
 *[FAIL] -> fail
 
 
 = fail
+~ paddlingsection = "false"
 The ship disappears beneath the surface of the waves with a great groan. 
 You are almost caught in its wake. Almost. 
 Those who are not so lucky are dragged beneath the dark seas.
@@ -124,23 +130,27 @@ There are rats still in the water, in the darkness.
 CHEDDAR: Rowland! 
 But it's not. 
 }
+~ leftslot = "empty"
+~ rightslot = "empty"
 You see two figures struggling in the water. One of them, a gentleman, is struggling to stay afloat. He swims towards you
 ~ leftslot = "Mordecai"
 MORDECAI: I say! Please, good fellow! Help me on to your craft!
-~ leftslot = "Cheddar"
+~ rightslot = "Cheddar"
 CHEDDAR: Give me your arm, I'll -- hghh - Christ, you're heavy...
 MORDECAI: Oh, thank you, m'lady! I --
 The shouts continue, however. In the distance, you see another figure splashing around.
 It cries out with an unratly sound.
-~ rightslot = "Arat"
+~ leftslot = "Arat"
 ARAT: Meow! I can't swim, help me!!! Meow!! 
 You can save the figure before they drown. Go!
--> chapter2_aratmordecai
-
-
-
+~ difficulty = 0.6
+~ distance = 0
+~ paddlingsection = "true"
+*[SUCCEED] -> chapter3.aratmordecai_success
+*[FAIL] -> chapter3.aratmordecai_fail
 
 = success
+~ paddlingsection = "false"
 The ship disappears beneath the surface of the waves with a great groan. 
 Those who did not move away quickly enough are caught in its wake and dragged beneath the waves.
 { rowland == "alive":
@@ -180,25 +190,143 @@ If you take too long, both will die. Choose.
 ~ rightslot = "empty"
 ~ arat = "dead"
 MORDECAI: Hurry, please! My shoes are being damaged, good sirs!
--> chapter2_mordecai
+~ difficulty = 0.6
+~ distance = 0
+~ paddlingsection = "true"
+*[SUCCEED] -> chapter3.mordecai_success
+*[FAIL] -> chapter3.mordecai_fail
+
 *[SAVE ARAT]
 ~ leftslot = "empty"
 ~ rightslot = "Arat"
 ~ mordecai = "dead"
-MORDECAI: Meooow!!! Meoww!!!
--> chapter2_arat
+ARAT: Meooow!!! Meoww!!!
+~ difficulty = 0.6
+~ distance = 0
+~ paddlingsection = "true" 
+*[SUCCEED] -> chapter3.arat_success
+*[FAIL] -> chapter3.arat_fail
 
 
-= chapter2_mordecai
-*currentend
--> END
+=== chapter3 ===
 
-= chapter2_arat
-*currentend
--> END
+= mordecai_success
+~ paddlingsection = "false"
+You reach Mordecai in good time, and he swims towards your boat.
 
-= chapter2_aratmordecai
-*currentend
+~ leftslot = "Mordecai"
+MORDECAI: I say! Please, good fellow! Help me on to your craft!
+~ rightslot = "Cheddar"
+CHEDDAR: Give me your arm, I'll -- hghh - Christ, you're heavy...
+MORDECAI: Oh, thank you, m'lady! I --
+The shouts continue, however. In the distance, you see the other figure cry out.
+~ leftslot = "Arat"
+~ rightslot = "empty"
+ARAT: Meoww!!! Help me!
+They fall beneath the waves. They are gone.
+
+
+
+= mordecai_fail
+~ paddlingsection = "false"
+You just reach Mordecai in time, managing to grab him before he falls beneath the waves. 
+
+~ leftslot = "Mordecai"
+MORDECAI: I say! You took your sweet time!
+~ rightslot = "Cheddar"
+CHEDDAR: Give me your arm you ungrateful twit, I'll -- hghh - Christ, you're heavy...
+MORDECAI: I could say the same about you, but I am a gentleman!
+The shouts continue, however. In the distance, you see the other figure cry out.
+~ leftslot = "Arat"
+~ rightslot = "empty"
+ARAT: Meoww!!! Help me!
+They fall beneath the waves. They are gone.
+
+
+= arat_success
+~ paddlingsection = "false"
+You reach Arat in good time, and they swim happily towards your boat.
+~ leftslot = "Arat"
+ARAT: Meow!!! Pick me up! Stroke me!
+~ rightslot = "Cheddar"
+CHEDDAR: Give me your arm! Oww, you're -- I need help!
+~ leftslot = "You"
+CHEDDAR: Three, two, one, pull!!!
+You help Cheddar pull the "rat" onto to the raft. 
+~ rightslot = "Arat"
+ARAT: Meowwww.
+The stranger starts to rub their cheeks over all of you, purring.
+The shouts continue, however. In the distance, you see the other figure cry out.
+~ leftslot = "Mordecai"
+~ rightslot = "empty"
+MORDECAI: I -- I -- oh, oh dash it all!
+He falls beneath the waves. He is gone.
+
+= arat_fail
+~ paddlingsection = "false"
+You just reach Arat in time, managing to grab them before they fall beneath the waves. 
+~ leftslot = "Arat"
+ARAT: Meow!!! MEOWW!!!!!
+~ rightslot = "Cheddar"
+CHEDDAR: Give me your arm! Oww, you're -- I need help!
+~ leftslot = "You"
+CHEDDAR: Three, two, one, pull!!!
+You help Cheddar pull the "rat" onto to the raft. 
+~ rightslot = "Arat"
+ARAT: Meowwww.
+The stranger starts to rub their cheeks over all of you, purring.
+The shouts continue, however. In the distance, you see the other figure cry out.
+~ leftslot = "Mordecai"
+~ rightslot = "empty"
+MORDECAI: I -- I -- oh, oh dash it all!
+He falls beneath the waves. He is gone.
+
+
+= aratmordecai_success
+~ paddlingsection = "false"
+You reach Arat in good time, and they swim happily towards your boat.
+~ leftslot = "Arat"
+ARAT: Meow!!! Pick me up! Stroke me!
+~ rightslot = "Cheddar"
+CHEDDAR: Give me your arm! Oww, you're -- I need help!
+~ leftslot = "Mordecai"
+MORDECAI: Don't look at me! I'm not touching them, look how dirty they are!
+CHEDDAR: Lovely. How about you? You going to help me?
+~ leftslot = "You"
+CHEDDAR: Three, two, one, pull!!!
+You help Cheddar pull the "rat" onto to the raft. 
+~ leftslot = "empty"
+~ rightslot = "Arat"
+ARAT: Meowwww.
+The stranger starts to rub their cheeks over all of you, purring.
+Mordecai winces and moves back from the stranger.
+~ leftslot = "Mordecai"
+MORDECAI: Get away from me, you filthy rat!
+ARAT: Yes. I am Arat.
+
+= aratmordecai_fail
+~ paddlingsection = "false"
+You just reach Arat in time, managing to grab them before they fall beneath the waves. 
+~ leftslot = "Arat"
+ARAT: Meow!!! MEOWW!!!!!
+~ rightslot = "Cheddar"
+CHEDDAR: Give me your arm! Oww, you're -- I need help!
+~ leftslot = "Mordecai"
+MORDECAI: Don't look at me! I'm not touching them, look how dirty they are!
+CHEDDAR: Lovely. How about you? You going to help me?
+~ leftslot = "You"
+CHEDDAR: Three, two, one, pull!!!
+You help Cheddar pull the "rat" onto to the raft. 
+~ leftslot = "empty"
+~ rightslot = "Arat"
+ARAT: Meowwww.
+The stranger starts to rub their cheeks over all of you, purring.
+Mordecai winces and moves back from the stranger.
+~ leftslot = "Mordecai"
+MORDECAI: Get away from me, you filthy rat!
+ARAT: Yes. I am Arat.
+
+
 -> END
 
 
