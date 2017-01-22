@@ -14,8 +14,10 @@ VAR cheddar = "alive"
 VAR arat = "alive"
 VAR mordecai = "alive"
 
-VAR rowland_onboat = "yes"
-VAR cheddar_onboat = "yes"
+VAR you_onboat = "no"
+VAR rowland_onboat = "no"
+VAR cheddar_onboat = "no"
+VAR emmental_onboat = "no"
 VAR arat_onboat = "no"
 VAR mordecai_onboat = "no"
 
@@ -31,9 +33,15 @@ VAR rescuecounter = 0
 
 TITLE: You were drowning, and they pulled you from beneath the surface. 
 TITLE: Survive, at all costs.
+~ audiolevel = 2
+
 -> event1
 
 = event1
+~ rowland_onboat = "yes"
+~ cheddar_onboat = "yes"
+~ emmental_onboat = "yes"
+~ you_onboat = "yes"
 ~ leftslot = "Cheddar"
 ~ rightslot = "Rowland"
 
@@ -44,6 +52,7 @@ ROWLAND: I'm trying as fast as I can, please, stop criticising me...
 
 
 = event2_rowlanddead
+~ audiolevel = 7
 ~ leftslot = "You"
 ~ rightslot = "Rowland"
 ~ rowland = "dead"
@@ -79,6 +88,7 @@ CHEDDAR: We need to get out of here...
 
 
 = event2_rowlandalive
+~ audiolevel = 7
 ~ leftslot = "You"
 ~ rightslot = "Rowland"
 ~ rowland = "alive"
@@ -104,7 +114,6 @@ CHEDDAR: It'll... it'll be OK. You'll do your best, like you always do. Now come
 
 
 = ending_swim
-
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 You need to get away from the wreckage. 
@@ -123,6 +132,7 @@ Failure to reach the end can have unexpected consequences.
 
 = fail
 ~ paddlingsection = "false"
+~ audiolevel = 5
 The ship disappears beneath the surface of the waves with a great groan. 
 You are almost caught in its wake. Almost. 
 Those who are not so lucky are dragged beneath the dark seas.
@@ -135,6 +145,7 @@ Cheddar pauses.
 CHEDDAR: Well done, mate. You tried.
 As you celebrate, the sounds of screams emerge clearly against the growing peace. 
 There are rats still in the water, in the darkness. 
+~ audiolevel = 3
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 - else:
@@ -149,6 +160,7 @@ But it's not.
 }
 ~ leftslot = "empty"
 ~ rightslot = "empty"
+~ audiolevel = 3
 You see two figures struggling in the water. One of them, a gentleman, is struggling to stay afloat. He swims towards you
 ~ leftslot = "Mordecai"
 MORDECAI: I say! Please, good fellow! Help me on to your craft!
@@ -169,6 +181,7 @@ You can save the figure before they drown. Go!
 *[FAIL] -> chapter3.aratmordecai_fail
 
 = success
+~ audiolevel = 5
 ~ paddlingsection = "false"
 The ship disappears beneath the surface of the waves with a great groan. 
 Those who did not move away quickly enough are caught in its wake and dragged beneath the waves.
@@ -181,12 +194,14 @@ Cheddar pauses.
 CHEDDAR: Well done, mate.
 As you celebrate, the sounds of screams emerge clearly against the growing peace. 
 There are rats still in the water, in the darkness. 
+~ audiolevel = 3
 ~ leftslot = "Cheddar"
 ~ rightslot = "empty"
 CHEDDAR: Over there!
 - else:
 ~ leftslot = "Cheddar"
 ~ rightslot = "empty"
+~ audiolevel = 3
 Cheddar is quiet, but for her laboured breathing. After a moment, she just says a single word, slowly and sadly.
 CHEDDAR: Rowland...
 The moment is broken by the sounds of screams emerging clearly against the growing peace. 
@@ -234,6 +249,7 @@ ARAT: Meooow!!! Meoww!!!
 
 = mordecai_success
 ~ paddlingsection = "false"
+~ audiolevel = 9
 You reach Mordecai in good time, and he swims towards your boat.
 
 ~ leftslot = "Mordecai"
@@ -252,6 +268,7 @@ They fall beneath the waves. They are gone.
 
 
 = mordecai_fail
+~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Mordecai in time, managing to grab him before he falls beneath the waves. 
 
@@ -269,7 +286,9 @@ They fall beneath the waves. They are gone.
 -> postrescue
 
 
+
 = arat_success
+~ audiolevel = 9
 ~ paddlingsection = "false"
 You reach Arat in good time, and they swim happily towards your boat.
 ~ leftslot = "Arat"
@@ -291,6 +310,7 @@ He falls beneath the waves. He is gone.
 -> postrescue
 
 = arat_fail
+~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Arat in time, managing to grab them before they fall beneath the waves. 
 ~ leftslot = "Arat"
@@ -312,6 +332,7 @@ He falls beneath the waves. He is gone.
 -> postrescue
 
 = aratmordecai_success
+~ audiolevel = 9
 ~ paddlingsection = "false"
 You reach Arat in good time, and they swim happily towards your boat.
 ~ leftslot = "Arat"
@@ -336,6 +357,7 @@ ARAT: Yes. I am Arat.
 -> postrescue
 
 = aratmordecai_fail
+~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Arat in time, managing to grab them before they fall beneath the waves. 
 ~ leftslot = "Arat"
@@ -363,6 +385,7 @@ ARAT: Yes. I am Arat.
 = postrescue
 ~ leftslot = "empty"
 ~ rightslot = "empty"
+~ audiolevel = 5
 At least some people made it. You didn't think you would. 
 You're not sure if you deserved to.
 Cheddar takes control. She could be a problem. 
@@ -390,7 +413,7 @@ ARAT: Please give me treat. I am scared and lost.
 ~ leftslot = "You"
 ~ rightslot = "empty"
 YOU: Who are all of you, anyway?
-
+~ audiolevel = 9
 
 
 { rowland_onboat == "yes":
@@ -437,6 +460,7 @@ EMMENTAL: Hi!
 ~ rightslot = "Cheddar"
 CHEDDAR: Who are -you-, anyway? You haven't said.
 -
+~ audiolevel = 5
 *[TRUTH]
 YOU: I don't have a name.
 
@@ -466,8 +490,10 @@ ARAT: I do not nibbles rats. Rats are not food.
 -
 ~ leftslot = "empty"
 ~ rightslot = "empty"
+~ audiolevel = 3
 Cheddar is about to say something when another noise bursts from the wreckage.
 Something on board just exploded.
+
 ~ leftslot = "You"
 ~ rightslot = "empty"
 YOU: We need to go. 
@@ -489,6 +515,7 @@ Fail the next section to stay here.
 ~ distance = 1
 ~ rescuetarget = ""
 ~ paddlingsection = "true"
+~ audiolevel = 5
 *[SUCCEED] -> left
 *[FAIL] -> remained
 
@@ -646,6 +673,7 @@ It was you who destroyed the ship.
 
 
 = arat_revelation_mordecai
+~ audiolevel = 3
 There is a sudden cry from elsewhere on the boat.
 ~ leftslot = "Mordecai"
 MORDECAI: Ah hah! You thought you'd eat us in our sleeps, did you?
@@ -697,6 +725,7 @@ CHEDDAR: I said we need to paddle! They're dangerous!
 = leftdrowner
 ~ paddlingsection = "false"
 ~ location = "left"
+~ audiolevel = 9
 { mordecai_onboat == "yes":
 ~ leftslot = "Cheddar"
 CHEDDAR: I think -- hphh -- I think we can stop now.
@@ -742,6 +771,7 @@ It was you who destroyed the ship.
 
 = remaineddrowner
 ~ paddlingsection = "false"
+~ audiolevel = 3
 { mordecai_onboat == "yes":
 You do not go that far.
 After a while, you hear splashing.
@@ -761,6 +791,7 @@ After a moment's hesitation, Mordecai throws his knife away.
 Mordecai moves forward and helps lift Arat from the water. 
 ~ arat_onboat = "yes"
 ~ rightslot = "Arat"
+~ audiolevel = 9
 ARAT: Meoww!!! Thank you!
 Arat starts to rub their cheeks over Mordecai, who tries to get away.
 Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
@@ -788,6 +819,7 @@ CHEDDAR: So was he! If everyone stops being scared, we might get out of this!
 CHEDDAR: So come on and help me pull!
 After a moment's hesitation, Arat bumbles forward.
 Arat helps lift Mordecai from the water.
+~ audiolevel = 9
 ~ mordecai_onboat = "yes"
 ~ rightslot = "Mordecai"
 MORDECAI: I -- I thank you, cat. You saved me.
@@ -823,6 +855,7 @@ It was you who destroyed the ship.
 
 
 = left
+~ audiolevel = 7
 TITLE: The next morning.
 TITLE: You have left the wreck.
 TITLE: You have not found land yet.
@@ -843,6 +876,7 @@ CHEDDAR: We have to, sweetie. We'll -- we have to.
 *[FAIL]
 -
 ~ paddlingsection = "false"
+~ audiolevel = 7
 { rowland_onboat == "yes":
 ~ rightslot = "Rowland"
 ROWLAND: I -- I'm not sure we're going to make it...
@@ -872,6 +906,7 @@ CHEDDAR: Again! We have to keep trying!
 *[FAIL]
 -
 ~ paddlingsection = "false"
+~ audiolevel = 7
 ~ leftslot = "Cheddar"
 CHEDDAR: Emmental, it's OK! We're going to make it! 
 Emmental says nothing. Her eyes are shut. 
@@ -888,6 +923,7 @@ Emmental says nothing. Her eyes are shut.
 *[FAIL]
 -
 ~ paddlingsection = "false"
+~ audiolevel = 7
 ~ leftslot = "Cheddar"
 CHEDDAR: Emmental?
 Her daughter is not moving.
@@ -899,6 +935,7 @@ Her daughter is not moving.
 
 
 = wreck
+~ audiolevel = 7
 TITLE: The next morning.
 TITLE: You have remained with the wreck.
 TITLE: No help has come.
@@ -920,6 +957,7 @@ CHEDDAR: We have to, sweetie. We'll -- it's rescue!
 *[FAIL]
 -
 ~ paddlingsection = "false"
+~ audiolevel = 7
 { rowland_onboat == "yes":
 ~ rightslot = "Rowland"
 ROWLAND: I -- I'm not sure we're going to make it...
@@ -949,6 +987,7 @@ CHEDDAR: Again! We have to keep trying!
 *[FAIL]
 -
 ~ paddlingsection = "false"
+~ audiolevel = 7
 ~ leftslot = "Cheddar"
 CHEDDAR: Emmental, it's OK! We're going to make it! 
 Emmental says nothing. Her eyes are shut. 
@@ -964,6 +1003,7 @@ Emmental says nothing. Her eyes are shut.
 ~ rescuecounter = rescuecounter + 1
 *[FAIL]
 -
+~ audiolevel = 7
 ~ paddlingsection = "false"
 ~ leftslot = "Cheddar"
 CHEDDAR: Emmental?
@@ -998,6 +1038,7 @@ Her daughter is not moving.
 
 
 = left_rescued
+~ audiolevel = 20
 As Cheddar cries, trying to shake her daughter, you see it.
 You see the side of the great ocean.
 The waves lap against the edge of the wall, beyond which you can see nothing.
@@ -1039,6 +1080,7 @@ TITLE: The End
 
 
 = wreck_rescued
+~ audiolevel = 20
 As Cheddar cries, trying to shake her daughter, you reach it.
 It's not a rat.
 It's a great circle, floating in the water. Glinting with steel.
@@ -1085,6 +1127,7 @@ TITLE: The End
 
 
 = left_notrescued
+~ audiolevel = 20
 As Cheddar cries, trying to shake her daughter, nothing happens.
 You have failed to find land.
 You have failed to please your employers.
@@ -1131,6 +1174,7 @@ TITLE: The End
 
 
 = wreck_notrescued
+~ audiolevel = 20
 As Cheddar cries, trying to shake her daughter, nothing happens.
 You have failed to leave at all.
 You have failed to please your employers.
