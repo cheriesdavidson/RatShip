@@ -3,6 +3,7 @@ VAR rightslot = "empty"
 VAR audiolevel = 0
 VAR audiotheme = "dialogue"
 VAR textspeed = 1
+VAR blank = "blank"
 
 VAR paddlingsection = "false"
 VAR rescuetarget = ""
@@ -308,7 +309,6 @@ He falls beneath the waves. He is gone.
 -> postrescue
 
 = arat_fail
-~ arat_onboat = "yes"
 ~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Arat in time, managing to grab them before they fall beneath the waves. 
@@ -1052,6 +1052,8 @@ CHEDDAR: Emmental, please...
 { rowland_onboat == "yes":
 ~ rightslot = "Rowland"
 ROWLAND: What -- what is that?
+- else:
+~ blank = "blank"
 }
 
 { mordecai_onboat == "yes":
