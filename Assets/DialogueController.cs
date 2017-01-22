@@ -120,7 +120,6 @@ public class DialogueController : MonoBehaviour {
 
             if (GameManager.inst.story.variablesState["paddlingsection"] != null)
             {
-                Debug.Log((string)GameManager.inst.story.variablesState["paddlingsection"]);
 
                 if ((string)GameManager.inst.story.variablesState["paddlingsection"] == "true") {
 
