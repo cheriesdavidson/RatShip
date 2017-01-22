@@ -23,9 +23,11 @@ public class UpdateBoard : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void UpdateSprites () {
+        //Debug.Log("Updating boat sprites");
+
         foreach (CharacterSprite c in characterSprites)
         {
-            Debug.Log("Attempting to change " + c.name.ToLower() + "_onboat");
+            Debug.Log("Attempting to change " + c.name.ToLower() + "_onboat to "+ GameManager.inst.story.variablesState[c.name.ToLower() + "_onboat"].ToString());
             if (GameManager.inst.story.variablesState[c.name.ToLower() + "_onboat"].ToString() == "yes")
                 c.spriteOnBoat.SetActive(true);
             else

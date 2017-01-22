@@ -141,54 +141,46 @@ public class DialogueController : MonoBehaviour {
                 isTitleCardActive = false;
             }
 
+            boat.UpdateSprites();
+
             ProcessStoryLine();
             return;
         }
 
         //if there's a choice
+
         if (GameManager.inst.story.currentChoices.Count > 0 && playerReadyToContinue)
         {
-
-            boat.UpdateSprites();
-
-            if (GameManager.inst.story.variablesState["paddlingsection"] != null)
-            {
-
-                if ((string)GameManager.inst.story.variablesState["paddlingsection"] == "true") {
-
-                    if (!GameManager.inst.waveSectionComplete)
-                    {
-                        GameManager.inst.LoadWaveSection();
-                    }
-                    else
-                    {
-                        characterLeft.gameObject.SetActive(false);
-                        characterRight.gameObject.SetActive(false);
-                        speakerLabel.transform.parent.gameObject.SetActive(false);
-
-                        if (GameManager.inst.paddlingSuccess)
-                            GameManager.inst.story.ChooseChoiceIndex(0);
-                        else
-                            GameManager.inst.story.ChooseChoiceIndex(1);
-
-                    }
-
+            if ((GameManager.inst.story.variablesState["paddlingsection"] != null) && ((string)GameManager.inst.story.variablesState["paddlingsection"] == "true")) {
+                if (!GameManager.inst.waveSectionComplete)
+                {
+                    GameManager.inst.LoadWaveSection();
                 }
                 else
                 {
-                    //hide the player ready thing
-                    playerTapButton.SetActive(false);
-                    waitingForChoice = true;
-                    ShowChoiceDialogue();
-                    playerReadyToContinue = true;
+                    // reset for next time
                     GameManager.inst.waveSectionComplete = false;
+
+                    characterLeft.gameObject.SetActive(false);
+                    characterRight.gameObject.SetActive(false);
+                    speakerLabel.transform.parent.gameObject.SetActive(false);
+
+                    if (GameManager.inst.paddlingSuccess)
+                        GameManager.inst.story.ChooseChoiceIndex(0);
+                    else
+                        GameManager.inst.story.ChooseChoiceIndex(1);
                 }
             }
-            
             else
-                Debug.LogError("Padding section variable not set!");
-
-
+            {
+                //hide the player ready thing
+                playerTapButton.SetActive(false);
+                waitingForChoice = true;
+                ShowChoiceDialogue();
+                playerReadyToContinue = true;
+                
+            }
+   
             return;
         }
         //something something figure out if player is in game over state?
@@ -232,20 +224,22 @@ public class DialogueController : MonoBehaviour {
         //any slot updates
 
         //TODO: Check this line actually works and update the string that greg is using!
-        Sprite sprite;
-
         object imageSlot = GameManager.inst.story.variablesState["leftslot"];
         if (imageSlot != null)
         {
             if (imageSlot.ToString().ToLower() == "empty")
             {
+                Debug.Log("Left slot empty");
                 characterLeft.gameObject.SetActive(false);
             }
             else {
-                characterLeft.gameObject.SetActive(true);
-                sprite = GetCharacter(imageSlot.ToString()).sprite;
+                Debug.Log("Left slot: " + imageSlot.ToString());
+                Sprite sprite = GetCharacter(imageSlot.ToString()).sprite;
                 if (sprite != null)
+                {
+                    characterLeft.gameObject.SetActive(true);
                     characterLeft.sprite = sprite;
+                }
             }
         }
         imageSlot = GameManager.inst.story.variablesState["rightslot"];
@@ -253,12 +247,18 @@ public class DialogueController : MonoBehaviour {
         {
             if (imageSlot.ToString().ToLower() == "empty")
             {
-                characterRight.gameObject.SetActive(true);
+                Debug.Log("Right slot empty");
+                characterRight.gameObject.SetActive(false);
             }
             else {
-                sprite = GetCharacter(imageSlot.ToString()).sprite;
-                if (name != null)
+                Debug.Log("Right slot: " + imageSlot.ToString());
+
+                Sprite sprite = GetCharacter(imageSlot.ToString()).sprite;
+                if (sprite != null)
+                {
+                    characterRight.gameObject.SetActive(true);
                     characterRight.sprite = sprite;
+                }       
             }
         }
 
