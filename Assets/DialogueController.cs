@@ -11,13 +11,13 @@ struct Character
     public string name;
     [SerializeField]
     public Sprite sprite;
+    [SerializeField]
+    public AudioClip voice;
 
 }
 
 public class DialogueController : MonoBehaviour {
 
-    [SerializeField]
-    private TextAsset inkJSONAsset;
     [SerializeField]
     Text textBox;
     [SerializeField]
@@ -37,7 +37,6 @@ public class DialogueController : MonoBehaviour {
 
 
     //private
-    private Story story;
     private float defaultTextSpeed = 0.03f;
     private float currentTextSpeed;
     private float nextLetterTime = 0;
@@ -62,13 +61,6 @@ public class DialogueController : MonoBehaviour {
         currentTextSpeed = defaultTextSpeed;
         textBox.text = "";
 
-        //KICK OFF STORY!
-        StartStory();
-    }
-
-    void StartStory()
-    {
-        story = new Story(inkJSONAsset.text);
     }
 
     void Update()
@@ -79,20 +71,22 @@ public class DialogueController : MonoBehaviour {
         //eliasPlayer.QueueEvent(setLevel.CreateSetLevelEvent(eliasPlayer.Elias));
 
         //DEAL WITH STORY VARIABLES
+        //CHANGE SCENE
+
         //ELIAS
-        if (story.variablesState["audiolevel"] != null)
+        if (GameManager.inst.story.variablesState["audiolevel"] != null)
         {
-            EliasController.inst.SetLevel((int)story.variablesState["audiolevel"]);
+            EliasController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiolevel"]);
         }
 
-        if (story.variablesState["audiotheme"] != null)
+        if (GameManager.inst.story.variablesState["audiotheme"] != null)
         {
-            EliasController.inst.SetLevel((int)story.variablesState["audiotheme"]);
+            EliasController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiotheme"]);
         }
 
         //TEXT SPEED
-        if (story.variablesState["textspeed"] != null)
-            currentTextSpeed = defaultTextSpeed * (int)story.variablesState["textspeed"];
+        if (GameManager.inst.story.variablesState["textspeed"] != null)
+            currentTextSpeed = defaultTextSpeed * (int)GameManager.inst.story.variablesState["textspeed"];
 
 
         //DEAL WITH ACTUAL GAME RENDERING
@@ -126,20 +120,56 @@ public class DialogueController : MonoBehaviour {
             return;
         }
 
-        if (story.canContinue && !printing && playerReadyToContinue)
+        if (GameManager.inst.story.canContinue && !printing && playerReadyToContinue)
         {
             ProcessStoryLine();
             return;
         }
 
         //if there's a choice
-        if (story.currentChoices.Count > 0 && playerReadyToContinue)
+        if (GameManager.inst.story.currentChoices.Count > 0 && playerReadyToContinue)
         {
-            //hide the player ready thing
-            playerTapButton.SetActive(false);
-            waitingForChoice = true;
-            ShowChoiceDialogue();
-            playerReadyToContinue = true;
+
+            if (GameManager.inst.story.variablesState["paddlingsection"] != null)
+            {
+                Debug.Log(GameManager.inst.story.variablesState["paddlingsection"]);
+
+                if ((string)GameManager.inst.story.variablesState["paddlingsection"] == "true") {
+
+                    if (!GameManager.inst.waveSectionComplete)
+                    {
+
+                        //load up the scene, give it difficulty
+                        if (GameManager.inst.story.variablesState["difficulty"] != null)
+                            //load wave level, return choice somehow?
+                            GameManager.inst.LoadWaveSection((float)GameManager.inst.story.variablesState["difficulty"]);
+                        else
+                            GameManager.inst.LoadWaveSection();
+                    }
+                    else
+                    {
+                        if (GameManager.inst.paddlingSuccess)
+                            GameManager.inst.story.ChooseChoiceIndex(0);
+                        else
+                            GameManager.inst.story.ChooseChoiceIndex(1);
+
+                    }
+
+                }
+                else
+                {
+                    //hide the player ready thing
+                    playerTapButton.SetActive(false);
+                    waitingForChoice = true;
+                    ShowChoiceDialogue();
+                    playerReadyToContinue = true;
+                }
+            }
+            
+            else
+                Debug.LogError("Padding section variable not set!");
+
+
             return;
         }
         //something something figure out if player is in game over state?
@@ -162,7 +192,7 @@ public class DialogueController : MonoBehaviour {
     void ProcessStoryLine()
     {
         //gets the next set of text?
-        string text = story.Continue().Trim();
+        string text = GameManager.inst.story.Continue().Trim();
         if (text.Length == 0)
         {
             return;
@@ -177,7 +207,7 @@ public class DialogueController : MonoBehaviour {
         //TODO: Check this line actually works and update the string that greg is using!
         Sprite sprite;
 
-        object imageSlot = story.variablesState["leftslot"];
+        object imageSlot = GameManager.inst.story.variablesState["leftslot"];
         if (imageSlot != null)
         {
             if (imageSlot.ToString().ToLower() == "empty")
@@ -191,7 +221,7 @@ public class DialogueController : MonoBehaviour {
                     characterLeft.sprite = sprite;
             }
         }
-        imageSlot = story.variablesState["rightslot"];
+        imageSlot = GameManager.inst.story.variablesState["rightslot"];
         if (imageSlot != null)
         {
             if (imageSlot.ToString().ToLower() == "empty")
@@ -235,9 +265,9 @@ public class DialogueController : MonoBehaviour {
     {
         //active the choices screen!
         choiceContainer.SetActive(true);
-        for (int i = 0; i < story.currentChoices.Count; i++)
+        for (int i = 0; i < GameManager.inst.story.currentChoices.Count; i++)
         {
-            Choice choice = story.currentChoices[i];
+            Choice choice = GameManager.inst.story.currentChoices[i];
             Transform choiceGo = Instantiate(choiceButtonPrefab).GetComponent<Transform>();
             choiceGo.SetParent(choiceContainer.transform);
             Button choiceButton = choiceGo.GetComponent<Button>();
@@ -254,7 +284,7 @@ public class DialogueController : MonoBehaviour {
 
     void OnClickChoiceButton(Choice choice)
     {
-        story.ChooseChoiceIndex(choice.index);
+        GameManager.inst.story.ChooseChoiceIndex(choice.index);
 
         //hide button container & delete buttons
         choiceContainer.SetActive(false);
