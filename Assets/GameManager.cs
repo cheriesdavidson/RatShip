@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
     public bool waveSectionComplete = false;
 
     public float difficulty;
+    public float distance;
     public bool paddlingSuccess;
     public Story story;
 
@@ -54,10 +55,12 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    public void LoadWaveSection(float d = 0)
+    public void LoadWaveSection()
     {
         waveSectionComplete = false;
-        difficulty = d;
+
+        difficulty = (story.variablesState["difficulty"]!=null) ? (float)story.variablesState["difficulty"] : 0.0f ;
+        distance = (story.variablesState["distance"]!=null) ? (float)story.variablesState["distance"] : 0.0f ;
         SceneManager.LoadScene("Waves");   
     }
 
