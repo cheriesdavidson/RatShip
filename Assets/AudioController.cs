@@ -30,7 +30,7 @@ public class AudioController : MonoBehaviour {
 
         if (GameManager.inst.story.variablesState["audiotheme"] != null)
         {
-            AudioController.inst.SetLevel((sting)GameManager.inst.story.variablesState["audiotheme"]);
+            AudioController.inst.SetTheme((string)GameManager.inst.story.variablesState["audiotheme"]);
         }
     }
 
