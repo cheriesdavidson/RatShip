@@ -21,6 +21,7 @@ public class AudioController : MonoBehaviour {
 
     void Start()
     {
+        SetLevel(20);
     }
 
     void Update()

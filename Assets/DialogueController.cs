@@ -41,6 +41,8 @@ public class DialogueController : MonoBehaviour {
     [SerializeField]
     VoiceManager voiceManager;
     [SerializeField]
+    UpdateBoard boat;
+    [SerializeField]
     Character[] characters;
 
 
@@ -70,7 +72,7 @@ public class DialogueController : MonoBehaviour {
         currentTextSpeed = defaultTextSpeed;
         textBox.text = "";
 
-        AudioController.inst.SetLevel(0);
+        //AudioController.inst.SetLevel(0);
 
     }
 
@@ -145,29 +147,7 @@ public class DialogueController : MonoBehaviour {
         if (GameManager.inst.story.currentChoices.Count > 0 && playerReadyToContinue)
         {
 
-            //update character states
-            for (int i = 0; i < characters.Length; i++)
-            {
-                if (GameManager.inst.story.variablesState[characters[i].name + "_onship"] != null)
-                {
-                    if (GameManager.inst.story.variablesState[characters[i].name + "_onship"].ToString().ToLower() == "true")
-                    {
-                        if (!characters[i].onShip)
-                        {
-                            characters[i].onShip = true;
-                            //TODO: add their sprite
-                        }
-                    }
-                    else
-                    {
-                        if (characters[i].onShip)
-                        {
-                            characters[i].onShip = false;
-                            //TODO: remove their sprite
-                        }
-                    }
-                }
-            }
+            boat.UpdateSprites();
 
             if (GameManager.inst.story.variablesState["paddlingsection"] != null)
             {

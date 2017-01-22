@@ -64,7 +64,7 @@ public class WavesScript : MonoBehaviour {
 
         // how far to raft?  tension music
         float dist = GetDistanceRaftToFinalSq() / StartDistanceToTarget;
-        print(dist);
+        //print(dist);
         if (AudioController.inst) {
             if (dist < .25f) {
                 AudioController.inst.SetLevel(3);
