@@ -11,6 +11,7 @@ public class RaftScript : MonoBehaviour {
     public GameObject PaddleFail;
     public WavesScript waveScript;
     public Text Speed;
+    public AudioClip[] OarSounds;
 
     static float MaxSlowdown = 1.47f;
     static float MinSlowdown = 0.0f;
@@ -31,6 +32,16 @@ public class RaftScript : MonoBehaviour {
     void UpdateVelocityText()
     {
         Speed.text = "Speed: " + waveScript.WAVE_VELOCITY;
+    }
+
+    void PlayOarSound()
+    {
+        AudioSource audio = GetComponent<AudioSource>();
+
+        if (audio.isPlaying) return;
+        audio.clip = OarSounds[Random.Range(0, OarSounds.Length)];
+        audio.Play();
+ 
     }
 
 	// Use this for initialization
@@ -92,6 +103,7 @@ public class RaftScript : MonoBehaviour {
         if(Input.anyKeyDown) {
             // successfully?
             if(descending) {
+                PlayOarSound();
                 LastPaddleSuccess = Time.time;
                 waveScript.WAVE_VELOCITY += 0.5f;
             } else {
