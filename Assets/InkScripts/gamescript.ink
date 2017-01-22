@@ -1,6 +1,7 @@
 VAR leftslot = "empty"
 VAR rightslot = "empty"
-VAR elias = 1
+VAR audiolevel = 0
+VAR audiotheme = "dialogue"
 VAR textspeed = 1
 
 VAR paddlingsection = "false"
@@ -22,7 +23,6 @@ VAR mordecai_onboat = "no"
 === chapter1 ===
 
 = event1
-~ elias = 1
 ~ leftslot = "Cheddar"
 ~ rightslot = "Rowland"
 
