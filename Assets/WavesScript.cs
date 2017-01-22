@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WavesScript : MonoBehaviour {
     public GameObject FinishPoint;
+    public GameObject Raft;
 
     float MinFinishPositionX = 37.14f;
     float MaxFinishPositionX = 83.38f;
@@ -35,8 +36,7 @@ public class WavesScript : MonoBehaviour {
 
     float GetDistanceRaftToFinalSq()
     {
-        GameObject raft = GameObject.Find("Raft");
-        Vector2 dist = FinishPoint.transform.position - raft.transform.position;
+        Vector2 dist = FinishPoint.transform.position - Raft.transform.position;
          return dist.SqrMagnitude();
     }
 
