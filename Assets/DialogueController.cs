@@ -61,6 +61,8 @@ public class DialogueController : MonoBehaviour {
         currentTextSpeed = defaultTextSpeed;
         textBox.text = "";
 
+        AudioController.inst.SetLevel(0);
+
     }
 
     void Update()

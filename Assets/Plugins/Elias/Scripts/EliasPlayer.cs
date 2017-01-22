@@ -154,7 +154,7 @@ public class EliasPlayer : MonoBehaviour
 		EliasHelper.LogResult(r, "Problems queing an event");
 	}
 		
-	private void Start()
+	private void Awake()
     {
         elias = new EliasHelper(file);
 		if (playOnStart) 

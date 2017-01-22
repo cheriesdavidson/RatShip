@@ -8,29 +8,38 @@ public class AudioController : MonoBehaviour {
     private EliasPlayer eliasPlayer;
     [SerializeField]
     public EliasSetLevel setLevel;
+    private EliasHelper eh;
 
     void Awake()
     {   
         if (inst != null)
             Destroy(this);
-
+        inst = this;
         DontDestroyOnLoad(gameObject);
         eliasPlayer = GetComponent<EliasPlayer>();
-        //SetLevel(0);
+    }
+
+    void Start()
+    {
     }
 
     void Update()
     {
 
-        //ELIAS
-        if (GameManager.inst.story.variablesState["audiolevel"] != null)
+        if (GameManager.inst.story != null)
         {
-            AudioController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiolevel"]);
-        }
 
-        if (GameManager.inst.story.variablesState["audiotheme"] != null)
-        {
-            AudioController.inst.SetTheme((string)GameManager.inst.story.variablesState["audiotheme"]);
+            //ELIAS
+            if (GameManager.inst.story.variablesState["audiolevel"] != null)
+            {
+
+                AudioController.inst.SetLevel((int)GameManager.inst.story.variablesState["audiolevel"]);
+            }
+
+            if (GameManager.inst.story.variablesState["audiotheme"] != null)
+            {
+                AudioController.inst.SetTheme((string)GameManager.inst.story.variablesState["audiotheme"]);
+            }
         }
     }
 
