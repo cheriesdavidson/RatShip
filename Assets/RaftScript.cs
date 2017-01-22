@@ -74,7 +74,7 @@ public class RaftScript : MonoBehaviour {
         // line ourselves up with wave normal
         Vector2 wave_normal = GetWaveNormal();
         Quaternion desired =  Quaternion.FromToRotation(Vector3.up, wave_normal);
-        float damping = 0.5f;
+        float damping = 0.8f;
         transform.rotation = Quaternion.Slerp(transform.rotation, desired, damping * Time.deltaTime);
 
         // do we need to display paddle success/failure?
@@ -108,12 +108,13 @@ public class RaftScript : MonoBehaviour {
                 waveScript.WAVE_VELOCITY += 0.5f;
             } else {
                 LastPaddleFail = Time.time;
-                waveScript.WAVE_VELOCITY -= 0.5f;
-                if(waveScript.WAVE_VELOCITY<=0.0f) { 
-                    print("failure");
-                    GameManager.inst.CompleteWaveSection(false);
-                }
+                waveScript.WAVE_VELOCITY -= 0.5f;  
             }
+        }
+
+        if (waveScript.WAVE_VELOCITY <= 0.0f) {
+            print("failure");
+            GameManager.inst.CompleteWaveSection(false);
         }
     }
 }
