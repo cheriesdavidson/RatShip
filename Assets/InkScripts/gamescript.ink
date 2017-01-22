@@ -491,6 +491,8 @@ Fail the next section to stay here.
 
 
 = left
+~ leftslot = "empty"
+~ rightslot = "empty"
 TITLE: TWO DAYS LATER...
 TITLE: It has been two days since you left the wreck.
 TITLE: You have no food or water left. 
@@ -500,14 +502,44 @@ TITLE: You will all die soon without sustenance.
 -> 2dayslater
 
 = remained
+~ leftslot = "empty"
+~ rightslot = "empty"
 TITLE: TWO DAYS LATER...
 TITLE: It has been two days since the sinking.
-TITLE: You have managed to scavenge some supplies.
+TITLE: You have no food or water left. 
 TITLE: Help has not come.
-TITLE: Time is running out and tensions are high. 
+TITLE: You will all die soon without sustenance.
 ~ location = "wreck"
 -> 2dayslater
 
 = 2dayslater
-* end of script
+
+{ arat_onboat == "yes":
+-> 2dayslater_arat
+
+- else:
+-> 2dayslater_mordecai
+}
+ 
+= 2dayslater_arat
+In the night, you stay awake to keep watch.
+Things were not supposed to happen like this.
+Arat wakes up, stretching and arching their back.
+~ leftslot = "You"
+~ rightslot = "Arat"
+ARAT: Hello.
+*[HELLO]
+*[GO BACK TO SLEEP]
+-> END
+
+
+
+
+
+
+
+
+
+= 2dayslater_mordecai
+
 -> END
