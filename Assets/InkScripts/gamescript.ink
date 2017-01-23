@@ -158,8 +158,7 @@ But it's not.
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 ~ audiolevel = 3
-You see two figures struggling in the water. One of them, a gentleman, is struggling to stay afloat. 
-He swims towards you
+You see two figures struggling in the water. One of them, a gentleman, is struggling to stay afloat. He swims towards you
 ~ leftslot = "Mordecai"
 MORDECAI: I say! Please, good fellow! Help me on to your craft!
 ~ rightslot = "Cheddar"
@@ -385,6 +384,7 @@ MORDECAI: Get away from me, you filthy rat!
 ARAT: Yes. I am Arat.
 -> postrescue
 
+
 = postrescue
 ~ leftslot = "empty"
 ~ rightslot = "empty"
@@ -397,33 +397,50 @@ Cheddar takes control. She could be a problem.
 CHEDDAR: Is everyone OK? Is anyone injured?
 ~ rightslot = "Emmental" 
 EMMENTAL: I'm OK, mumma!
+
 { rowland_onboat == "yes":
 ~ rightslot = "Rowland"
 ROWLAND: I - I suppose so! But my arms are pretty darn tired!
 }
+
 { mordecai_onboat == "yes":
 ~ rightslot = "Mordecai"
 MORDECAI: My suit! I'm absolutely soaked!
 }
+
 { arat_onboat == "yes":
 ~ rightslot = "Arat"
 ARAT: Please give me treat. I am scared and lost. 
 }
+
 ~ leftslot = "You"
 ~ rightslot = "empty"
+YOU: Who are all of you, anyway?
 ~ audiolevel = 9
-YOU: Who are all of you, anyway? 
+
+
 { rowland_onboat == "yes":
 ~ rightslot = "Rowland"
 ROWLAND: My name is Rowly. Pleased to meet you! 
 ROWLAND: Despite the, er, circumstances...
 }
+
 { mordecai_onboat == "yes":
 ~ rightslot = "Mordecai"
 MORDECAI: Mordecai Johnson, at your service. 
 MORDECAI: I do business all over the world.
 MORDECAI: I'm a big deal, you know.
 MORDECAI: Perhaps you've heard of me?
+*[IMPRESSIVE]
+YOU: Um, impressive...
+MORDECAI: I sell the best in anti-cat detectors, my good chap!
+{ arat_onboat == "yes":
+~ leftslot = "Arat"
+ARAT: I think rats are best friends.
+MORDECAI: I like your optimistic attitude, sir!
+~ leftslot = "You"
+}
+*[STOP BOASTING]
 YOU: Stop boasting. Rats have just died.
 MORDECAI: Why I -- I never! This is really the height of -- of --
 MORDECAI: Dash it all!
@@ -509,7 +526,6 @@ Fail the next section to stay here.
 = left
 ~ leftslot = "empty"
 ~ rightslot = "empty"
-~ paddlingsection = "false"
 TITLE: TWO DAYS LATER...
 TITLE: It has been two days since you left the wreck.
 TITLE: You have no food or water left. 
@@ -521,7 +537,6 @@ TITLE: You will all die soon without sustenance.
 = remained
 ~ leftslot = "empty"
 ~ rightslot = "empty"
-~ paddlingsection = "false"
 TITLE: TWO DAYS LATER...
 TITLE: You remained with the wreck.
 TITLE: It has been two days since the sinking.
@@ -1212,9 +1227,9 @@ TITLE: The End
 
 = credits
 TITLE: Written by Greg Buchanan
-TITLE: Programming by Amy Phillips and Cherie Davidson
+TITLE: Programming by Amy Phillips & Cherie Davidson
 TITLE: Art by Aiden Kohler
 TITLE: Music by Holley Gray
-TITLE: Made at Guildford \#GGJ17
+TITLE: Made at Guildford GGJ17
 TITLE: Thanks for playing!
 -> END

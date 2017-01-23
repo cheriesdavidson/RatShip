@@ -74,6 +74,8 @@ public class DialogueController : MonoBehaviour {
 
         boat.UpdateSprites();
 
+        DeactiveChildButtons(choiceContainer);
+
         //AudioController.inst.SetLevel(0);
 
     }
@@ -184,7 +186,13 @@ public class DialogueController : MonoBehaviour {
    
             return;
         }
+
         //something something figure out if player is in game over state?
+        if (GameManager.inst.story.currentChoices.Count == 0 && !GameManager.inst.story.canContinue)
+        {
+            //gameover! reset to start menu :)
+            //GameManager.inst.LoadTitleScreen();
+        }
     }
 
     public void PlayerTap()
@@ -230,11 +238,11 @@ public class DialogueController : MonoBehaviour {
         {
             if (imageSlot.ToString().ToLower() == "empty")
             {
-                Debug.Log("Left slot empty");
+                //Debug.Log("Left slot empty");
                 characterLeft.gameObject.SetActive(false);
             }
             else {
-                Debug.Log("Left slot: " + imageSlot.ToString());
+                //Debug.Log("Left slot: " + imageSlot.ToString());
                 Sprite sprite = GetCharacter(imageSlot.ToString()).sprite;
                 if (sprite != null)
                 {
@@ -248,11 +256,11 @@ public class DialogueController : MonoBehaviour {
         {
             if (imageSlot.ToString().ToLower() == "empty")
             {
-                Debug.Log("Right slot empty");
+                //Debug.Log("Right slot empty");
                 characterRight.gameObject.SetActive(false);
             }
             else {
-                Debug.Log("Right slot: " + imageSlot.ToString());
+                //Debug.Log("Right slot: " + imageSlot.ToString());
 
                 Sprite sprite = GetCharacter(imageSlot.ToString()).sprite;
                 if (sprite != null)
@@ -316,10 +324,9 @@ public class DialogueController : MonoBehaviour {
         for (int i = 0; i < GameManager.inst.story.currentChoices.Count; i++)
         {
             Choice choice = GameManager.inst.story.currentChoices[i];
-            Transform choiceGo = Instantiate(choiceButtonPrefab).GetComponent<Transform>();
-            choiceGo.SetParent(choiceContainer.transform);
-            Button choiceButton = choiceGo.GetComponent<Button>();
-            choiceGo.GetComponentInChildren<Text>().text = choice.text;
+            choiceContainer.transform.GetChild(i).gameObject.SetActive(true);
+            Button choiceButton = choiceContainer.transform.GetChild(i).GetComponent<Button>();
+            choiceButton.GetComponentInChildren<Text>().text = choice.text;
             choiceButton.onClick.AddListener(delegate {
                 OnClickChoiceButton(choice);
             });
@@ -336,18 +343,19 @@ public class DialogueController : MonoBehaviour {
 
         //hide button container & delete buttons
         choiceContainer.SetActive(false);
-        RemoveChildren(choiceContainer);
+        DeactiveChildButtons(choiceContainer);
         textBox.text = "";
         waitingForChoice = false;
     }
 
-    void RemoveChildren(GameObject parentGo)
+    void DeactiveChildButtons(GameObject parentGo)
     {
         Transform parent = parentGo.transform;
         int childCount = parent.childCount;
         for (int i = childCount - 1; i >= 0; --i)
         {
-            GameObject.Destroy(parent.GetChild(i).gameObject);
+            parent.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+            parent.GetChild(i).gameObject.SetActive(false);
         }
     }
 
