@@ -158,7 +158,8 @@ But it's not.
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 ~ audiolevel = 3
-You see two figures struggling in the water. One of them, a gentleman, is struggling to stay afloat. He swims towards you
+You see two figures struggling in the water. One of them, a gentleman, is struggling to stay afloat.
+He swims towards you
 ~ leftslot = "Mordecai"
 MORDECAI: I say! Please, good fellow! Help me on to your craft!
 ~ rightslot = "Cheddar"
@@ -469,7 +470,6 @@ ARAT: I have name. I am Arat. I like to hide in boxes.
 *[LIE]
 YOU: I'm Nibbles.
 
-
 { mordecai_onboat == "yes":
 ~ rightslot = "Mordecai"
 MORDECAI: Pleased to make your acquaintance, Nibbles!
@@ -515,6 +515,7 @@ Fail the next section to stay here.
 = left
 ~ leftslot = "empty"
 ~ rightslot = "empty"
+~ paddlingsection = "false"
 TITLE: TWO DAYS LATER...
 TITLE: It has been two days since you left the wreck.
 TITLE: You have no food or water left. 
@@ -526,6 +527,7 @@ TITLE: You will all die soon without sustenance.
 = remained
 ~ leftslot = "empty"
 ~ rightslot = "empty"
+~ paddlingsection = "false"
 TITLE: TWO DAYS LATER...
 TITLE: You remained with the wreck.
 TITLE: It has been two days since the sinking.
