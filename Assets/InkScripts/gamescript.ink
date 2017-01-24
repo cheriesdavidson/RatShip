@@ -418,7 +418,6 @@ ARAT: Please give me treat. I am scared and lost.
 YOU: Who are all of you, anyway?
 ~ audiolevel = 9
 
-
 { rowland_onboat == "yes":
 ~ rightslot = "Rowland"
 ROWLAND: My name is Rowly. Pleased to meet you! 
@@ -431,16 +430,6 @@ MORDECAI: Mordecai Johnson, at your service.
 MORDECAI: I do business all over the world.
 MORDECAI: I'm a big deal, you know.
 MORDECAI: Perhaps you've heard of me?
-*[IMPRESSIVE]
-YOU: Um, impressive...
-MORDECAI: I sell the best in anti-cat detectors, my good chap!
-{ arat_onboat == "yes":
-~ leftslot = "Arat"
-ARAT: I think rats are best friends.
-MORDECAI: I like your optimistic attitude, sir!
-~ leftslot = "You"
-}
-*[STOP BOASTING]
 YOU: Stop boasting. Rats have just died.
 MORDECAI: Why I -- I never! This is really the height of -- of --
 MORDECAI: Dash it all!
