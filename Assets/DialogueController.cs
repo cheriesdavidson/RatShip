@@ -339,6 +339,14 @@ public class DialogueController : MonoBehaviour {
 
     void OnClickChoiceButton(Choice choice)
     {
+        // stop double clicks confusing ink
+        if (!waitingForChoice)
+        {
+            Debug.Log("Ignoring choice " + choice.index + " because player already chose - avoids double clicks confusing ink");
+            return;
+        }
+
+        Debug.Log("choosing "+choice.index);
         GameManager.inst.story.ChooseChoiceIndex(choice.index);
 
         //hide button container & delete buttons
