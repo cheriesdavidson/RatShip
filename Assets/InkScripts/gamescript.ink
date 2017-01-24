@@ -31,10 +31,10 @@ VAR rescuecounter = 0
 -> chapter1
 
 === chapter1 ===
-
+~ audiolevel = 2
 TITLE: You were drowning, and they pulled you from beneath the surface. 
 TITLE: Survive, at all costs.
-~ audiolevel = 2
+
 
 -> event1
 
