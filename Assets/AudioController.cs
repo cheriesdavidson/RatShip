@@ -13,7 +13,11 @@ public class AudioController : MonoBehaviour {
     void Awake()
     {   
         if (inst != null)
-            Destroy(this);
+        {
+            inst.eliasPlayer.Stop(); // you'd think that destroying it would stop it, but nope, gotta call stop to actually stop the music first!
+            Destroy(inst);
+        }
+            
         inst = this;
         DontDestroyOnLoad(gameObject);
         eliasPlayer = GetComponent<EliasPlayer>();

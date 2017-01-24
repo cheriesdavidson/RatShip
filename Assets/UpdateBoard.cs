@@ -28,10 +28,10 @@ public class UpdateBoard : MonoBehaviour {
         foreach (CharacterSprite c in characterSprites)
         {
             //Debug.Log("Attempting to change " + c.name.ToLower() + "_onboat to "+ GameManager.inst.story.variablesState[c.name.ToLower() + "_onboat"].ToString());
-            if (GameManager.inst.story.variablesState[c.name.ToLower() + "_onboat"].ToString() == "yes")
-                c.spriteOnBoat.SetActive(true);
-            else
+            if (GameManager.inst.story.variablesState[c.name.ToLower() + "_onboat"]==null || GameManager.inst.story.variablesState[c.name.ToLower() + "_onboat"].ToString() != "yes")
                 c.spriteOnBoat.SetActive(false);
+            else
+                c.spriteOnBoat.SetActive(true);
         }
     }
 }

@@ -190,8 +190,11 @@ public class DialogueController : MonoBehaviour {
         //something something figure out if player is in game over state?
         if (GameManager.inst.story.currentChoices.Count == 0 && !GameManager.inst.story.canContinue)
         {
-            //gameover! reset to start menu :)
-            //GameManager.inst.LoadTitleScreen();
+            if (Input.anyKeyDown)
+            {
+                //gameover! reset to start menu :)
+                GameManager.inst.LoadTitleScreen();
+            }
         }
     }
 

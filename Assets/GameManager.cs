@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
     {
         if (inst != null)
         {
-            Destroy(this);
+            Destroy(inst);
         }
 
         inst = this;
