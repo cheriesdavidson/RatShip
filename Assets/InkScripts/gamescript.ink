@@ -134,26 +134,26 @@ The ship disappears beneath the surface of the waves with a great groan.
 You are almost caught in its wake. Almost. 
 Those who are not so lucky are dragged beneath the dark seas.
 { rowland == "alive":
-~ leftslot = "Cheddar"
-~ rightslot = "Rowland"
-ROWLAND: We -- we're alive!
-CHEDDAR: We are.
-Cheddar pauses.
-CHEDDAR: Well done, mate. You tried.
-As you celebrate, the sounds of screams emerge clearly against the growing peace. 
-There are rats still in the water, in the darkness. 
-~ audiolevel = 3
-~ leftslot = "empty"
-~ rightslot = "empty"
-- else:
-~ leftslot = "Cheddar"
-~ rightslot = "empty"
-Cheddar is quiet, but for her laboured breathing. After a moment, she just says a single word, slowly and sadly.
-CHEDDAR: Rowland...
-The moment is broken by the sounds of screams emerging clearly against the growing peace. 
-There are rats still in the water, in the darkness.
-CHEDDAR: Rowland! 
-But it's not. 
+    ~ leftslot = "Cheddar"
+    ~ rightslot = "Rowland"
+    ROWLAND: We -- we're alive!
+    CHEDDAR: We are.
+    Cheddar pauses.
+    CHEDDAR: Well done, mate. You tried.
+    As you celebrate, the sounds of screams emerge clearly against the growing peace. 
+    There are rats still in the water, in the darkness. 
+    ~ audiolevel = 3
+    ~ leftslot = "empty"
+    ~ rightslot = "empty"
+    - else:
+    ~ leftslot = "Cheddar"
+    ~ rightslot = "empty"
+    Cheddar is quiet, but for her laboured breathing. After a moment, she just says a single word, slowly and sadly.
+    CHEDDAR: Rowland...
+    The moment is broken by the sounds of screams emerging clearly against the growing peace. 
+    There are rats still in the water, in the darkness.
+    CHEDDAR: Rowland! 
+    But it's not. 
 }
 ~ leftslot = "empty"
 ~ rightslot = "empty"
@@ -184,28 +184,28 @@ You can save the figure before they drown. Go!
 The ship disappears beneath the surface of the waves with a great groan. 
 Those who did not move away quickly enough are caught in its wake and dragged beneath the waves.
 { rowland == "alive":
-~ leftslot = "Cheddar"
-~ rightslot = "Rowland"
-ROWLAND: We made it!
-CHEDDAR: We did.
-Cheddar pauses.
-CHEDDAR: Well done, mate.
-As you celebrate, the sounds of screams emerge clearly against the growing peace. 
-There are rats still in the water, in the darkness. 
-~ audiolevel = 3
-~ leftslot = "Cheddar"
-~ rightslot = "empty"
-CHEDDAR: Over there!
-- else:
-~ leftslot = "Cheddar"
-~ rightslot = "empty"
-~ audiolevel = 3
-Cheddar is quiet, but for her laboured breathing. After a moment, she just says a single word, slowly and sadly.
-CHEDDAR: Rowland...
-The moment is broken by the sounds of screams emerging clearly against the growing peace. 
-There are rats still in the water, in the darkness.
-CHEDDAR: Rowland! 
-But it's not. 
+    ~ leftslot = "Cheddar"
+    ~ rightslot = "Rowland"
+    ROWLAND: We made it!
+    CHEDDAR: We did.
+    Cheddar pauses.
+    CHEDDAR: Well done, mate.
+    As you celebrate, the sounds of screams emerge clearly against the growing peace. 
+    There are rats still in the water, in the darkness. 
+    ~ audiolevel = 3
+    ~ leftslot = "Cheddar"
+    ~ rightslot = "empty"
+    CHEDDAR: Over there!
+    - else:
+    ~ leftslot = "Cheddar"
+    ~ rightslot = "empty"
+    ~ audiolevel = 3
+    Cheddar is quiet, but for her laboured breathing. After a moment, she just says a single word, slowly and sadly.
+    CHEDDAR: Rowland...
+    The moment is broken by the sounds of screams emerging clearly against the growing peace. 
+    There are rats still in the water, in the darkness.
+    CHEDDAR: Rowland! 
+    But it's not. 
 }
 
 You look back to see two figures struggling in the water. One of them is a gentleman, struggling to stay afloat.
@@ -400,18 +400,18 @@ CHEDDAR: Is everyone OK? Is anyone injured?
 EMMENTAL: I'm OK, mumma!
 
 { rowland_onboat == "yes":
-~ rightslot = "Rowland"
-ROWLAND: I - I suppose so! But my arms are pretty darn tired!
+    ~ rightslot = "Rowland"
+    ROWLAND: I - I suppose so! But my arms are pretty darn tired!
 }
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: My suit! I'm absolutely soaked!
+    ~ rightslot = "Mordecai"
+    MORDECAI: My suit! I'm absolutely soaked!
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-ARAT: Please give me treat. I am scared and lost. 
+    ~ rightslot = "Arat"
+    ARAT: Please give me treat. I am scared and lost. 
 }
 
 ~ leftslot = "You"
@@ -420,64 +420,78 @@ YOU: Who are all of you, anyway?
 ~ audiolevel = 9
 
 { rowland_onboat == "yes":
-~ rightslot = "Rowland"
-ROWLAND: My name is Rowly. Pleased to meet you! 
-ROWLAND: Despite the, er, circumstances...
+    ~ rightslot = "Rowland"
+    ROWLAND: My name is Rowly. Pleased to meet you! 
+    ROWLAND: Despite the, er, circumstances...
 }
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: Mordecai Johnson, at your service. 
-MORDECAI: I do business all over the world.
-MORDECAI: I'm a big deal, you know.
-MORDECAI: Perhaps you've heard of me?
-YOU: Stop boasting. Rats have just died.
-MORDECAI: Why I -- I never! This is really the height of -- of --
-MORDECAI: Dash it all!
+    ~ rightslot = "Mordecai"
+    MORDECAI: Mordecai Johnson, at your service. 
+    MORDECAI: I do business all over the world.
+    MORDECAI: I'm a big deal, you know.
+    MORDECAI: Perhaps you've heard of me?
+    *[IMPRESSIVE]
+    YOU: Um, impressive...
+    MORDECAI: I sell the best in anti-cat detectors, my good chap!
+    { arat_onboat == "yes":
+        ~ leftslot = "Arat"
+        ARAT: I think rats are best friends.
+        MORDECAI: I like your optimistic attitude, sir!
+        ~ leftslot = "You"
+    }
+    *[STOP BOASTING]
+    YOU: Stop boasting. Rats have just died.
+    MORDECAI: Why I -- I never! This is really the height of -- of --
+    MORDECAI: Dash it all!
 }
+*
 -
+
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-ARAT: I am Arat.
-*[GOOD TO MEET YOU]
-YOU: It's nice to meet you, Arat.
-ARAT: Yes. Hello. I like, I like cheese and rat things.
-*[WHAT DO YOU DO?]
-ARAT: I do rat things. I eat cheese and run in mazes. Hello.
+    ~ rightslot = "Arat"
+    ARAT: I am Arat.
+    *[GOOD TO MEET YOU]
+    YOU: It's nice to meet you, Arat.
+    ARAT: Yes. Hello. I like, I like cheese and rat things.
+    *[WHAT DO YOU DO?]
+    ARAT: I do rat things. I eat cheese and run in mazes. Hello.
 }
+*
 -
+
 ~ rightslot = "Cheddar"
 CHEDDAR: And I'm Cheddar. This is my pup Emmental.
 ~ rightslot = "Emmental"
 EMMENTAL: Hi!
 ~ rightslot = "Cheddar"
 CHEDDAR: Who are -you-, anyway? You haven't said.
--
+
 ~ audiolevel = 5
 *[TRUTH]
 YOU: I don't have a name.
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: That's, well gosh, why don't you have one, old fellow?
+    ~ rightslot = "Mordecai"
+    MORDECAI: That's, well gosh, why don't you have one, old fellow?
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-ARAT: I have name. I am Arat. I like to hide in boxes.
+    ~ rightslot = "Arat"
+    ARAT: I have name. I am Arat. I like to hide in boxes.
 }
 
 *[LIE]
 YOU: I'm Nibbles.
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: Pleased to make your acquaintance, Nibbles!
+    ~ rightslot = "Mordecai"
+    MORDECAI: Pleased to make your acquaintance, Nibbles!
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-ARAT: I do not nibbles rats. Rats are not food. 
+    ~ rightslot = "Arat"
+    ARAT: I do not nibbles rats. Rats are not food. 
 }
 -
 ~ leftslot = "empty"
@@ -640,9 +654,9 @@ Arat begins to cry a little, wiping tears from their whiskers.
 ARAT: I'm.. -meow- ... I'm so hungry.
 
 { mordecai_onboat == "yes":
--> arat_revelation_mordecai
-- else:
--> arat_revelation_alone
+    -> arat_revelation_mordecai
+    - else:
+    -> arat_revelation_alone
 }
 
 = arat_revelation_alone
@@ -767,66 +781,66 @@ It was you who destroyed the ship.
 ~ paddlingsection = "false"
 ~ audiolevel = 3
 { mordecai_onboat == "yes":
-You do not go that far.
-After a while, you hear splashing.
-Arat pokes their head over the surface, crying out.
-~ leftslot = "Arat"
-ARAT: Help me! Meow!! I won't hurt anyone!
-~ rightslot = "Cheddar"
-CHEDDAR: Take my arm, Arat! Help me, all of you!
-~ leftslot = "Mordecai"
-MORDECAI: Are you mad? That thing will eat us!
-CHEDDAR: The only dangerous one here is you. 
-CHEDDAR: You should be ashamed of yourself!
-CHEDDAR: Arat's just a child! Have you no child of your own?
-MORDECAI: I -- I didn't do anything, I was just warning it...
-CHEDDAR: Shut up and help me pull!
-After a moment's hesitation, Mordecai throws his knife away.
-Mordecai moves forward and helps lift Arat from the water. 
-~ arat_onboat = "yes"
-~ rightslot = "Arat"
-~ audiolevel = 9
-ARAT: Meoww!!! Thank you!
-Arat starts to rub their cheeks over Mordecai, who tries to get away.
-Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
-MORDECAI: I didn't -- I -- Please forgive me, won't you?
-ARAT: Meooowwwww
-~ leftslot = "empty"
-~ rightslot = "empty"
-For many hours, Mordecai talks to Arat, telling them about his daughter.
-He says his daughter is a mouse. He adopted her after his mother was killed.
-Arat is already asleep when Mordecai says this.
-Eventually, sleep takes them all, the boat a little calmer.
+    You do not go that far.
+    After a while, you hear splashing.
+    Arat pokes their head over the surface, crying out.
+    ~ leftslot = "Arat"
+    ARAT: Help me! Meow!! I won't hurt anyone!
+    ~ rightslot = "Cheddar"
+    CHEDDAR: Take my arm, Arat! Help me, all of you!
+    ~ leftslot = "Mordecai"
+    MORDECAI: Are you mad? That thing will eat us!
+    CHEDDAR: The only dangerous one here is you. 
+    CHEDDAR: You should be ashamed of yourself!
+    CHEDDAR: Arat's just a child! Have you no child of your own?
+    MORDECAI: I -- I didn't do anything, I was just warning it...
+    CHEDDAR: Shut up and help me pull!
+    After a moment's hesitation, Mordecai throws his knife away.
+    Mordecai moves forward and helps lift Arat from the water. 
+    ~ arat_onboat = "yes"
+    ~ rightslot = "Arat"
+    ~ audiolevel = 9
+    ARAT: Meoww!!! Thank you!
+    Arat starts to rub their cheeks over Mordecai, who tries to get away.
+    Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
+    MORDECAI: I didn't -- I -- Please forgive me, won't you?
+    ARAT: Meooowwwww
+    ~ leftslot = "empty"
+    ~ rightslot = "empty"
+    For many hours, Mordecai talks to Arat, telling them about his daughter.
+    He says his daughter is a mouse. He adopted her after his mother was killed.
+    Arat is already asleep when Mordecai says this.
+    Eventually, sleep takes them all, the boat a little calmer.
 - else:
-You do not go that far.
-After a while, you hear splashing.
-Mordecai pokes his head over the surface, crying out.
-~ leftslot = "Mordecai"
-ARAT: Help me! Please, I can't -- I can't swim very well!
-~ rightslot = "Cheddar"
-CHEDDAR: Take my arm, Mordecai! Help me, all of you!
-~ leftslot = "Arat"
-ARAT: But he -- the bad rat wants to kill me!
-CHEDDAR: He won't! I won't let him, OK?
-ARAT: I'm scared, meow!!
-CHEDDAR: So was he! If everyone stops being scared, we might get out of this!
-CHEDDAR: So come on and help me pull!
-After a moment's hesitation, Arat bumbles forward.
-Arat helps lift Mordecai from the water.
-~ audiolevel = 9
-~ mordecai_onboat = "yes"
-~ rightslot = "Mordecai"
-MORDECAI: I -- I thank you, cat. You saved me.
-Arat starts to lick the water from Mordecai, who flinches away.
-Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
-MORDECAI: I didn't -- I -- Please forgive me, won't you?
-ARAT: Meooowwwww
-~ leftslot = "empty"
-~ rightslot = "empty"
-For many hours, Mordecai talks to Arat, telling them about his daughter.
-He says his daughter is a mouse. He adopted her after his mother was killed.
-Arat is already asleep when Mordecai says this.
-Eventually, sleep takes them all, the boat a little calmer.
+    You do not go that far.
+    After a while, you hear splashing.
+    Mordecai pokes his head over the surface, crying out.
+    ~ leftslot = "Mordecai"
+    ARAT: Help me! Please, I can't -- I can't swim very well!
+    ~ rightslot = "Cheddar"
+    CHEDDAR: Take my arm, Mordecai! Help me, all of you!
+    ~ leftslot = "Arat"
+    ARAT: But he -- the bad rat wants to kill me!
+    CHEDDAR: He won't! I won't let him, OK?
+    ARAT: I'm scared, meow!!
+    CHEDDAR: So was he! If everyone stops being scared, we might get out of this!
+    CHEDDAR: So come on and help me pull!
+    After a moment's hesitation, Arat bumbles forward.
+    Arat helps lift Mordecai from the water.
+    ~ audiolevel = 9
+    ~ mordecai_onboat = "yes"
+    ~ rightslot = "Mordecai"
+    MORDECAI: I -- I thank you, cat. You saved me.
+    Arat starts to lick the water from Mordecai, who flinches away.
+    Eventually, Mordecai gives up, the faintest hint of tears in his eyes.
+    MORDECAI: I didn't -- I -- Please forgive me, won't you?
+    ARAT: Meooowwwww
+    ~ leftslot = "empty"
+    ~ rightslot = "empty"
+    For many hours, Mordecai talks to Arat, telling them about his daughter.
+    He says his daughter is a mouse. He adopted her after his mother was killed.
+    Arat is already asleep when Mordecai says this.
+    Eventually, sleep takes them all, the boat a little calmer.
 }
 As you sit up, you think about life.
 You think about what you did to these people.
@@ -841,9 +855,9 @@ It was you who destroyed the ship.
 ~ leftslot = "empty"
 ~ rightslot = "empty"
 { location == "wreck":
--> wreck
-- else:
--> left
+    -> wreck
+    - else:
+    -> left
 }
 
 
@@ -872,18 +886,18 @@ CHEDDAR: We have to, sweetie. We'll -- we have to.
 ~ paddlingsection = "false"
 ~ audiolevel = 7
 { rowland_onboat == "yes":
-~ rightslot = "Rowland"
-ROWLAND: I -- I'm not sure we're going to make it...
+    ~ rightslot = "Rowland"
+    ROWLAND: I -- I'm not sure we're going to make it...
 }
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: We shouldn't have left...
+    ~ rightslot = "Mordecai"
+    MORDECAI: We shouldn't have left...
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-Arat says nothing, panting quietly in pain.
+    ~ rightslot = "Arat"
+    Arat says nothing, panting quietly in pain.
 }
 ~ leftslot = "Cheddar"
 ~ rightslot = "empty"
@@ -953,18 +967,18 @@ CHEDDAR: We have to, sweetie. We'll -- it's rescue!
 ~ paddlingsection = "false"
 ~ audiolevel = 7
 { rowland_onboat == "yes":
-~ rightslot = "Rowland"
-ROWLAND: I -- I'm not sure we're going to make it...
+    ~ rightslot = "Rowland"
+    ROWLAND: I -- I'm not sure we're going to make it...
 }
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: We should have left days ago...
+    ~ rightslot = "Mordecai"
+    MORDECAI: We should have left days ago...
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-Arat says nothing, panting quietly in pain.
+    ~ rightslot = "Arat"
+    Arat says nothing, panting quietly in pain.
 }
 ~ leftslot = "Cheddar"
 ~ rightslot = "empty"
@@ -1133,18 +1147,18 @@ CHEDDAR: Emmental, please...
 ~ leftslot = "empty"
 
 { rowland_onboat == "yes":
-~ rightslot = "Rowland"
-ROWLAND: Cheddar, I...
+    ~ rightslot = "Rowland"
+    ROWLAND: Cheddar, I...
 }
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: Allow me to help! I know a lot of medicinal techniques!
+    ~ rightslot = "Mordecai"
+    MORDECAI: Allow me to help! I know a lot of medicinal techniques!
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-Arat only cries.
+    ~ rightslot = "Arat"
+    Arat only cries.
 }
 ~ leftslot = "empty"
 ~ rightslot = "empty"
@@ -1180,18 +1194,18 @@ CHEDDAR: Emmental, please...
 ~ leftslot = "empty"
 
 { rowland_onboat == "yes":
-~ rightslot = "Rowland"
-ROWLAND: Cheddar, I...
+    ~ rightslot = "Rowland"
+    ROWLAND: Cheddar, I...
 }
 
 { mordecai_onboat == "yes":
-~ rightslot = "Mordecai"
-MORDECAI: Allow me to help! I know a lot of medicinal techniques!
+    ~ rightslot = "Mordecai"
+    MORDECAI: Allow me to help! I know a lot of medicinal techniques!
 }
 
 { arat_onboat == "yes":
-~ rightslot = "Arat"
-Arat only cries.
+    ~ rightslot = "Arat"
+    Arat only cries.
 }
 ~ leftslot = "empty"
 ~ rightslot = "empty"
