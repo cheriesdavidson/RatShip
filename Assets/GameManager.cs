@@ -69,8 +69,10 @@ public class GameManager : MonoBehaviour {
         waveSectionComplete = false;
 
         difficulty = (story.variablesState["difficulty"]!=null) ? (float)story.variablesState["difficulty"] : 0.0f ;
-        distance = 0.0f;// (story.variablesState["distance"]!=null) ? (float)story.variablesState["distance"] : 0.0f ;
+        distance = (story.variablesState["distance"]!=null) ? (float)story.variablesState["distance"] : 0.0f ;
         rescuetarget = (story.variablesState["rescuetarget"] != null) ? (string)story.variablesState["rescuetarget"] : "";
+
+        print("difficulty " + difficulty + ", distance " + distance + ", rescuetarget " + rescuetarget);
         SceneManager.LoadScene("Waves");   
     }
 
