@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour {
     {
         waveSectionComplete = false;
 
+        print(story.variablesState["distance"]);
         difficulty = (story.variablesState["difficulty"]!=null) ? (float)story.variablesState["difficulty"] : 0.0f ;
         distance = (story.variablesState["distance"]!=null) ? (float)story.variablesState["distance"] : 0.0f ;
         rescuetarget = (story.variablesState["rescuetarget"] != null) ? (string)story.variablesState["rescuetarget"] : "";

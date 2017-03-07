@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WavesScript : MonoBehaviour {
     public GameObject ParentFinishPoint;
     public GameObject ChosenFinishPoint;
     public GameObject Raft;
+    public GameObject CountdownObject;
+    public Text CountdownText;
+
+    public enum WaveState
+    {
+        ShowCountdown,
+        Paddling,
+        ShowResult
+    };
+    public WaveState Stage = WaveState.ShowCountdown;
     private Camera MainCamera;
 
     float MinFinishPositionX = 37.14f;
@@ -16,6 +27,7 @@ public class WavesScript : MonoBehaviour {
 
     float OriginalChosenTargetY = 0.0f; // used for bobbing
 
+    private float CountdownTime = 3.0f;
 
     void SetRescueTargetVisible(string target)
     {
@@ -56,7 +68,7 @@ public class WavesScript : MonoBehaviour {
     private Vector3 InitialRaftScreenPos = new Vector3(-1,-1,-1);
     private Vector3 FinalRaftScreenPos = new Vector3(-1, -1, -1);
     // try to line things up so that when we reach the target our boat is on the RHS of the screen
-    private void UpdateCameraSpeed()
+    private void UpdateCameraPosition()
     {
         if (InitialRaftScreenPos == new Vector3(-1, -1, -1))
         {
@@ -91,6 +103,10 @@ public class WavesScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Stage = WaveState.ShowCountdown;
+        CountdownTime = 3.0f;
+        CountdownObject.SetActive(true);
+
         // scale waves based on difficulty 
 
         // draw who we are rescuing
@@ -104,27 +120,79 @@ public class WavesScript : MonoBehaviour {
         StartDistanceToTarget = GetDistanceRaftToFinalSq();
     }
 
+    private bool Success = false;
+    public void StopPaddling(bool success)
+    {
+        CountdownTime = 3.0f;
+        CountdownObject.SetActive(true);
+        Stage = WaveState.ShowResult;
+        Success = success;
+        if(success)
+        {
+            CountdownText.text = "Success!";
+            AudioController.inst.SetLevel(3);
+        } else
+        {
+            CountdownText.text = "Failed!";
+            AudioController.inst.SetLevel(7);
+        }
+    }
+
     // Update is called once per frame
     void Update () {
 
-        // move waves leftwards
-        transform.position = new Vector3(transform.position.x - Time.deltaTime * WAVE_VELOCITY, transform.position.y, transform.position.z);
-
-        UpdateCameraSpeed();
-        BobChosenTarget();
-
-        // how far to raft?  tension music
-        float dist = GetDistanceRaftToFinalSq() / StartDistanceToTarget;
-        if (AudioController.inst) {
-            if (dist < .25f) {
+        switch(Stage)
+        {
+            case WaveState.ShowCountdown:
+                CountdownTime -= Time.deltaTime;
+                CountdownText.text = "Paddle on the way down the waves!  " + (int)(CountdownTime+1.0f) + "...";
                 AudioController.inst.SetLevel(16);
-            } else if (dist < .5f) {
-                AudioController.inst.SetLevel(15);
-            } else if(dist < .75f) {
-                AudioController.inst.SetLevel(14);
-            } else {
-                AudioController.inst.SetLevel(13);
-            }
-        }  
+                if (CountdownTime <= 0.0f)
+                {
+                    Stage = WaveState.Paddling;
+                    CountdownObject.SetActive(false);
+                }
+
+                // move waves leftwards
+                transform.position = new Vector3(transform.position.x - Time.deltaTime * WAVE_VELOCITY, transform.position.y, transform.position.z);
+
+                break;
+            case WaveState.Paddling:
+                // move waves leftwards
+                transform.position = new Vector3(transform.position.x - Time.deltaTime * WAVE_VELOCITY, transform.position.y, transform.position.z);
+
+                UpdateCameraPosition();
+                BobChosenTarget();
+
+                // how far to raft?  tension music
+                float dist = GetDistanceRaftToFinalSq() / StartDistanceToTarget;
+                if (AudioController.inst)
+                {
+                    if (dist < .25f)
+                    {
+                        AudioController.inst.SetLevel(16);
+                    }
+                    else if (dist < .5f)
+                    {
+                        AudioController.inst.SetLevel(15);
+                    }
+                    else if (dist < .75f)
+                    {
+                        AudioController.inst.SetLevel(14);
+                    }
+                    else
+                    {
+                        AudioController.inst.SetLevel(13);
+                    }
+                }
+                break;
+            case WaveState.ShowResult:
+                CountdownTime -= Time.deltaTime;
+                if (CountdownTime <= 0.0f)
+                {
+                    GameManager.inst.CompleteWaveSection(Success); 
+                }
+                break;
+        }
     }
 }

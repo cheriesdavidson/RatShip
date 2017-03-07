@@ -48,7 +48,7 @@ public class RaftScript : MonoBehaviour {
     {
         if (col.gameObject.name == "TreasureObject" || col.gameObject.name == "mordecai" || col.gameObject.name == "arat") {
             print("success");
-            GameManager.inst.CompleteWaveSection(true);
+            waveScript.StopPaddling(true);
         }
     }
 
@@ -58,8 +58,17 @@ public class RaftScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        // don't update when doing countdown
+        if (waveScript.Stage != WavesScript.WaveState.Paddling)
+        {
+            PaddleSuccess.SetActive(false);
+            PaddleFail.SetActive(false);
+            PaddlePrompt.SetActive(false);
+            return;
+        }         
+
         // slowdown each frame (except the first few frames)
-        if(Time.timeSinceLevelLoad > 1.5f)
+        if(Time.timeSinceLevelLoad > 6.0f)
             waveScript.WAVE_VELOCITY -= SlowdownPerSecond * Time.deltaTime;
 
         // line ourselves up with wave normal
@@ -105,7 +114,7 @@ public class RaftScript : MonoBehaviour {
 
         if (waveScript.WAVE_VELOCITY <= 0.0f) {
             print("failure");
-            GameManager.inst.CompleteWaveSection(false);
+            waveScript.StopPaddling(false);
         }
     }
 }
