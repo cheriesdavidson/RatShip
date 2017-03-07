@@ -7,8 +7,8 @@ VAR blank = "blank"
 
 VAR paddlingsection = "false"
 VAR rescuetarget = ""
-VAR difficulty = 0
-VAR distance = 0
+VAR difficulty = 0.0
+VAR distance = 0.0
 
 VAR rowland = "alive"
 VAR cheddar = "alive"
@@ -172,7 +172,7 @@ It cries out with an unratly sound.
 ARAT: Meow! I can't swim, help me!!! Meow!! 
 You can save the figure before they drown. Go!
 ~ difficulty = 0.6
-~ distance = 0
+~ distance = 0.0
 ~ rescuetarget = "arat"
 ~ paddlingsection = "true"
 *[SUCCEED] -> chapter3.aratmordecai_success
@@ -223,7 +223,7 @@ If you take too long, both will die. Choose.
 ~ arat = "dead"
 MORDECAI: Hurry, please! My shoes are being damaged, good sirs!
 ~ difficulty = 0.6
-~ distance = 0
+~ distance = 0.0
 ~ rescuetarget = "mordecai"
 ~ paddlingsection = "true"
 **[SUCCEED] -> chapter3.mordecai_success
@@ -235,7 +235,7 @@ MORDECAI: Hurry, please! My shoes are being damaged, good sirs!
 ~ mordecai = "dead"
 ARAT: Meooow!!! Meoww!!!
 ~ difficulty = 0.6
-~ distance = 0
+~ distance = 0.0
 ~ rescuetarget = "arat"
 ~ paddlingsection = "true" 
 -
@@ -518,7 +518,7 @@ Fail the next section to stay here.
 === chapter4 ===
 = initialsetup
 ~ difficulty = 0.2
-~ distance = 1
+~ distance = 1.0
 ~ rescuetarget = ""
 ~ paddlingsection = "true"
 ~ audiolevel = 5
@@ -876,7 +876,7 @@ CHEDDAR: We have to, sweetie. We'll -- we have to.
 ~ rightslot = "empty"
 -
 ~ difficulty = 0.3
-~ distance = 1
+~ distance = 1.0
 ~ rescuetarget = ""
 ~ paddlingsection = "true"
 *[SUCCEED]
@@ -957,7 +957,7 @@ CHEDDAR: We have to, sweetie. We'll -- it's rescue!
 ~ rightslot = "empty"
 -
 ~ difficulty = 0.3
-~ distance = 1
+~ distance = 1.0
 ~ rescuetarget = ""
 ~ paddlingsection = "true"
 *[SUCCEED]
