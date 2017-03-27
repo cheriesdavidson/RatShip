@@ -291,6 +291,7 @@ They fall beneath the waves. They are gone.
 ~ audiolevel = 9
 ~ paddlingsection = "false"
 You reach Arat in good time, and they swim happily towards your boat.
+~ rightslot = "empty"
 ~ leftslot = "Arat"
 ARAT: Meow!!! Pick me up! Stroke me!
 ~ rightslot = "Cheddar"
@@ -313,6 +314,7 @@ He falls beneath the waves. He is gone.
 ~ audiolevel = 9
 ~ paddlingsection = "false"
 You just reach Arat in time, managing to grab them before they fall beneath the waves. 
+~ rightslot = "empty"
 ~ leftslot = "Arat"
 ARAT: Meow!!! MEOWW!!!!!
 ~ rightslot = "Cheddar"

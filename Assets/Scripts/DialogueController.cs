@@ -27,7 +27,9 @@ public class DialogueController : MonoBehaviour {
     [SerializeField]
     GameObject choiceButtonPrefab;
     [SerializeField]
-    Text speakerLabel;
+    Text speakerLabelRight;
+    [SerializeField]
+    Text speakerLabelLeft;
     [SerializeField]
     Image characterRight;
     [SerializeField]
@@ -44,6 +46,8 @@ public class DialogueController : MonoBehaviour {
     UpdateBoard boat;
     [SerializeField]
     Character[] characters;
+    [SerializeField]
+    Color nonSpeakerColor = Color.grey;
 
 
     //private
@@ -56,6 +60,9 @@ public class DialogueController : MonoBehaviour {
     private bool printing = false;
     private bool playerReadyToContinue = true;
     private bool isTitleCardActive = false;
+
+    private string rightSpeakerName = "";
+    private string leftSpeakerName = "";
 
     void Start()
     {
@@ -73,6 +80,8 @@ public class DialogueController : MonoBehaviour {
         textBox.text = "";
 
         boat.UpdateSprites();
+        ClearSpeakerLabel();
+        ClearDialogueVisuals();
 
         DeactiveChildButtons(choiceContainer);
 
@@ -92,7 +101,7 @@ public class DialogueController : MonoBehaviour {
             currentTextSpeed = defaultTextSpeed * (int)GameManager.inst.story.variablesState["textspeed"];
 
 
-        //DEAL WITH ACTUAL GAME RENDERING
+        //DEAL WITH ACTUAL GAME TEXT RENDERING
         if (printing)
         {
             if (Time.time > nextLetterTime)
@@ -101,13 +110,42 @@ public class DialogueController : MonoBehaviour {
                 if (currentLetter < currentDialogue.Length)
                 {
                     //if we still have things to print...
-                    //update lates
+                    //update later
+
+                    Text targetTextbox;
+                    if (isTitleCardActive)
+                        targetTextbox = titleCardText;
+                    else
+                        targetTextbox = textBox;
+
+                    string currentText = targetTextbox.text + currentDialogue[currentLetter];
+
+                    //need to check if the current letter is part of a word that should be put on the next line...
+                    //find out what letters exist in the current word post this particular one...
+                    string endOfWord = "";
+                    int j = 1;
+                    while (currentLetter + j < currentDialogue.Length) //check it's not the last letter....
+                    {
+                        if (char.IsWhiteSpace(currentDialogue, currentLetter + j))
+                            break;
+                        endOfWord += currentDialogue[currentLetter + j];
+                        j++;
+                    } 
+
+                    if (endOfWord.Length > 0)
+                    {
+                        //check if it fits on this line and add \n if not
+                        int currentLineNo = targetTextbox.cachedTextGenerator.lineCount;
+                        targetTextbox.text = currentText + endOfWord;
+                        Canvas.ForceUpdateCanvases();
+                        if (currentLineNo != targetTextbox.cachedTextGenerator.lineCount)
+                            currentText += '\n';
+                    }
 
                     nextLetterTime = Time.time + currentTextSpeed;
-                    if (isTitleCardActive)
-                        titleCardText.text += currentDialogue[currentLetter];
-                    else
-                        textBox.text += currentDialogue[currentLetter];
+
+                    targetTextbox.text = currentText;
+
                     currentLetter++;
 
                 }
@@ -164,9 +202,7 @@ public class DialogueController : MonoBehaviour {
                     // reset for next time
                     GameManager.inst.waveSectionComplete = false;
 
-                    characterLeft.gameObject.SetActive(false);
-                    characterRight.gameObject.SetActive(false);
-                    speakerLabel.transform.parent.gameObject.SetActive(false);
+                    ClearDialogueVisuals();
 
                     if (GameManager.inst.paddlingSuccess)
                         GameManager.inst.story.ChooseChoiceIndex(0);
@@ -243,6 +279,7 @@ public class DialogueController : MonoBehaviour {
             {
                 //Debug.Log("Left slot empty");
                 characterLeft.gameObject.SetActive(false);
+                leftSpeakerName = "";
             }
             else {
                 //Debug.Log("Left slot: " + imageSlot.ToString());
@@ -251,6 +288,7 @@ public class DialogueController : MonoBehaviour {
                 {
                     characterLeft.gameObject.SetActive(true);
                     characterLeft.sprite = sprite;
+                    leftSpeakerName = imageSlot.ToString();
                 }
             }
         }
@@ -261,6 +299,8 @@ public class DialogueController : MonoBehaviour {
             {
                 //Debug.Log("Right slot empty");
                 characterRight.gameObject.SetActive(false);
+                rightSpeakerName = "";
+
             }
             else {
                 //Debug.Log("Right slot: " + imageSlot.ToString());
@@ -270,17 +310,19 @@ public class DialogueController : MonoBehaviour {
                 {
                     characterRight.gameObject.SetActive(true);
                     characterRight.sprite = sprite;
-                }       
+                    rightSpeakerName = imageSlot.ToString();
+
+                }
             }
         }
 
         //then we want to check for character!
         string[] splits = text.Split(':');
 
-
+        
         if (splits.Length > 1) //assume this is a character thing
         {
-            //if title screen
+            //special case for title screen:
             if (splits[0].ToLower() == "title")
             {
                 //run the title card
@@ -293,21 +335,21 @@ public class DialogueController : MonoBehaviour {
                 //do speaker card stuff:
                 char[] speakerName = splits[0].ToString().ToLower().ToCharArray();
                 speakerName[0] = speakerName[0].ToString().ToUpper()[0];
-                speakerLabel.text = new string(speakerName);
+                string speaker = new string(speakerName);
                 textBox.fontStyle = FontStyle.Normal;
 
-                //make the speaker label active
-                speakerLabel.transform.parent.gameObject.SetActive(true);
+                SetSpeakerLabel(speaker);
 
                 //play voice!
-                voiceManager.Play(GetCharacter(speakerLabel.text).voice);
+                voiceManager.Play(GetCharacter(speaker).voice);
             }
-            currentDialogue = splits[1].Trim();
+            currentDialogue = splits[1].Trim(); //actual content
         }
         else
         {
-            //narrative - all appears at once
-            speakerLabel.transform.parent.gameObject.SetActive(false);
+            //narrative, no images
+            ClearSpeakerLabel();
+
             currentDialogue = splits[0].Trim();
             textBox.fontStyle = FontStyle.Italic;
         }
@@ -339,6 +381,56 @@ public class DialogueController : MonoBehaviour {
         return;
     }
 
+    void ClearSpeakerLabel()
+    {
+        characterLeft.color = nonSpeakerColor;
+        characterRight.color = nonSpeakerColor;
+        speakerLabelLeft.transform.parent.gameObject.SetActive(false);
+        speakerLabelRight.transform.parent.gameObject.SetActive(false);
+    }
+
+    void SetSpeakerLabel(string characterName) //slot 0 = left, 1 = right
+    {
+
+        ClearSpeakerLabel();
+
+        //do something to figure out which slot that character is in?
+        if (characterName == rightSpeakerName)
+        {
+            speakerLabelRight.text = characterName;
+            speakerLabelRight.transform.parent.gameObject.SetActive(true);
+            characterRight.color = Color.white;
+        }
+        else //by default we use the left one if the character is *not* on screene
+        {
+            speakerLabelLeft.text = characterName;
+            speakerLabelLeft.transform.parent.gameObject.SetActive(true);
+
+            if (characterName == leftSpeakerName) 
+                characterLeft.color = Color.white;
+        }
+    }
+
+    void ClearDialogueVisuals()
+    {
+        ClearDialogueVisuals(0);
+        ClearDialogueVisuals(1);
+    }
+
+    void ClearDialogueVisuals(int slot) //slot 0 = left, 1 = right
+    {
+        if (slot == 0)
+        {
+            characterLeft.gameObject.SetActive(false);
+            speakerLabelLeft.transform.parent.gameObject.SetActive(false);
+            leftSpeakerName = "";
+        }
+        else {
+            characterRight.gameObject.SetActive(false);
+            speakerLabelRight.transform.parent.gameObject.SetActive(false);
+            rightSpeakerName = "";
+        }
+    }
 
     void OnClickChoiceButton(Choice choice)
     {
